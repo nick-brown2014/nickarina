@@ -1,65 +1,160 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen bg-background">
+      <section className="hero-section bg-placeholder">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/images/hero-bg.jpg')",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+        <div className="hero-overlay" />
+
+        <div className="hero-content text-center px-6 max-w-4xl mx-auto">
+          <p className="text-accent-light tracking-[0.3em] uppercase text-sm mb-6">
+            Together with their families
+          </p>
+
+          <h1 className="font-[var(--font-cinzel)] text-5xl md:text-7xl lg:text-8xl tracking-wide text-foreground mb-6">
+            Nick & Karina
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <div className="w-24 h-px bg-accent-light mx-auto mb-6" />
+
+          <p className="font-[var(--font-cinzel)] text-xl md:text-2xl tracking-widest text-accent-light mb-4">
+            Request the pleasure of your company
+          </p>
+
+          <p className="font-[var(--font-cinzel)] text-lg md:text-xl text-muted mb-8">
+            at the celebration of their marriage
+          </p>
+
+          <div className="space-y-2 mb-12">
+            <p className="font-[var(--font-cinzel)] text-3xl md:text-4xl tracking-wider text-foreground">
+              October 31, 2026
+            </p>
+            <p className="text-muted text-lg">
+              Halloween
+            </p>
+          </div>
+
+          <div className="space-y-1 mb-12">
+            <p className="font-[var(--font-cinzel)] text-xl text-accent-light">
+              Della Terra Mountain Chateau
+            </p>
+            <p className="text-muted">
+              Estes Park, Colorado
+            </p>
+          </div>
+
+          <Link
+            href="/rsvp"
+            className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-10 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+          >
+            RSVP
+          </Link>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 bg-background">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-[var(--font-cinzel)] text-3xl md:text-4xl tracking-wider text-foreground mb-8">
+            Join Us
+          </h2>
+          <div className="w-16 h-px bg-accent mx-auto mb-8" />
+          <p className="text-muted text-lg leading-relaxed max-w-2xl mx-auto mb-12">
+            We invite you to celebrate with us as we begin our journey together.
+            Nestled in the mountains of Colorado, Della Terra Mountain Chateau
+            provides the perfect backdrop for our gothic-inspired celebration
+            on All Hallows&apos; Eve.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 mt-16">
+            <div className="p-8 border border-accent/20 hover:border-accent-light/40 transition-colors">
+              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-accent-light mb-4">
+                Ceremony
+              </h3>
+              <p className="text-muted">
+                4:00 PM
+              </p>
+            </div>
+
+            <div className="p-8 border border-accent/20 hover:border-accent-light/40 transition-colors">
+              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-accent-light mb-4">
+                Reception
+              </h3>
+              <p className="text-muted">
+                5:30 PM
+              </p>
+            </div>
+
+            <div className="p-8 border border-accent/20 hover:border-accent-light/40 transition-colors">
+              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-accent-light mb-4">
+                Attire
+              </h3>
+              <p className="text-muted">
+                Formal / Gothic
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 bg-[#0a0a0a]">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-[var(--font-cinzel)] text-3xl md:text-4xl tracking-wider text-foreground mb-8">
+            The Venue
+          </h2>
+          <div className="w-16 h-px bg-accent mx-auto mb-8" />
+
+          <div className="relative aspect-video bg-placeholder mb-8 overflow-hidden">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: "url('/images/venue-bg.jpg')",
+              }}
+            />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <p className="text-muted/50 text-sm tracking-wider uppercase">
+                Venue image coming soon
+              </p>
+            </div>
+          </div>
+
+          <h3 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-4">
+            Della Terra Mountain Chateau
+          </h3>
+          <p className="text-muted mb-2">
+            3501 Fall River Road
+          </p>
+          <p className="text-muted mb-8">
+            Estes Park, CO 80517
+          </p>
+
+          <a
+            href="https://maps.google.com/?q=Della+Terra+Mountain+Chateau+Estes+Park+CO"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
+          >
+            Get Directions
+          </a>
+        </div>
+      </section>
+
+      <footer className="py-12 px-6 border-t border-accent/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-4">
+            N & K
+          </p>
+          <p className="text-muted text-sm">
+            October 31, 2026 &middot; Estes Park, Colorado
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
