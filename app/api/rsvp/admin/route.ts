@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { prisma } from "@/app/lib/prisma";
 
 export async function GET() {
+  const headersList = await headers();
+  const authHeader = headersList.get("authorization");
+  const adminSecret = process.env.ADMIN_SECRET;
+
+  if (!adminSecret || authHeader !== `Bearer ${adminSecret}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const guests = await prisma.guest.findMany({
       include: { rsvp: true },

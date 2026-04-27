@@ -38,6 +38,7 @@ export default function RsvpPage() {
   const [searchError, setSearchError] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,6 +90,7 @@ export default function RsvpPage() {
   };
 
   const handleSubmit = async () => {
+    setSubmitError("");
     setIsSubmitting(true);
     try {
       const res = await fetch("/api/rsvp/submit", {
@@ -99,9 +101,12 @@ export default function RsvpPage() {
 
       if (res.ok) {
         setStep("confirmation");
+      } else {
+        const data = await res.json();
+        setSubmitError(data.error || "Failed to save RSVP. Please try again.");
       }
     } catch {
-      // allow retry
+      setSubmitError("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -251,6 +256,10 @@ export default function RsvpPage() {
                 </div>
               </div>
             ))}
+
+            {submitError && (
+              <p className="text-red-400 text-sm text-center">{submitError}</p>
+            )}
 
             <div className="flex gap-4 pt-4">
               <button

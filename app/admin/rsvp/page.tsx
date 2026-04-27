@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 interface Guest {
   id: string;
@@ -35,25 +35,41 @@ type FilterType = "all" | "responded" | "not-responded" | "attending" | "decline
 export default function AdminRsvpPage() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<FilterType>("all");
+  const [adminSecret, setAdminSecret] = useState("");
+  const [authenticated, setAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState("");
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (secret: string) => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/rsvp/admin");
+      const res = await fetch("/api/rsvp/admin", {
+        headers: { Authorization: `Bearer ${secret}` },
+      });
+
+      if (res.status === 401) {
+        setAuthError("Invalid admin secret.");
+        setAuthenticated(false);
+        return;
+      }
+
       const data = await res.json();
       setGuests(data.guests);
       setStats(data.stats);
+      setAuthenticated(true);
     } catch {
-      // silently handle
+      setAuthError("Failed to connect. Please try again.");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    fetchData(adminSecret);
+  };
 
   const filteredGuests = guests.filter((g) => {
     switch (filter) {
@@ -69,6 +85,48 @@ export default function AdminRsvpPage() {
         return true;
     }
   });
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-background pt-24 pb-16 px-6 flex items-center justify-center">
+        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-6">
+          <div className="text-center">
+            <h1 className="font-[var(--font-cinzel)] text-3xl tracking-wider text-foreground mb-4">
+              Admin Access
+            </h1>
+            <div className="w-16 h-px bg-accent mx-auto mb-6" />
+          </div>
+          <div>
+            <label
+              htmlFor="adminSecret"
+              className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
+            >
+              Admin Secret
+            </label>
+            <input
+              id="adminSecret"
+              type="password"
+              value={adminSecret}
+              onChange={(e) => setAdminSecret(e.target.value)}
+              className="w-full bg-transparent border border-accent/30 px-4 py-3 text-foreground placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors"
+              placeholder="Enter admin secret"
+              required
+            />
+          </div>
+          {authError && (
+            <p className="text-red-400 text-sm text-center">{authError}</p>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Verifying..." : "Access Dashboard"}
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
