@@ -55,6 +55,12 @@ export default function AdminRsvpPage() {
       }
 
       const data = await res.json();
+
+      if (!res.ok) {
+        setAuthError(data.error || "Failed to load data.");
+        return;
+      }
+
       setGuests(data.guests);
       setStats(data.stats);
       setAuthenticated(true);
