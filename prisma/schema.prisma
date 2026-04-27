@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Guest {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String?
+  partyId   String
+  rsvp      Rsvp?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lastName, firstName])
+  @@index([partyId])
+}
+
+model Rsvp {
+  id             String     @id @default(cuid())
+  guestId        String     @unique
+  guest          Guest      @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  welcomeParty   Boolean?
+  ceremony       Boolean?
+  reception      Boolean?
+  goodbyeBrunch  Boolean?
+  mealChoice     MealChoice?
+  dietaryNotes   String?
+  submittedAt    DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+enum MealChoice {
+  MEAT
+  VEGETARIAN
+}
