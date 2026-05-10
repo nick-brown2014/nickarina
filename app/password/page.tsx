@@ -29,7 +29,7 @@ export default function PasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6" style={{ backgroundImage: `url("${curtains.src}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+    <div className="min-h-screen bg-black flex items-center justify-center px-6" style={{ backgroundImage: `url("${curtains.src}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
       <div className="w-full max-w-sm text-center">
         <form onSubmit={handleSubmit} className="space-y-2">
           <div className="relative">
