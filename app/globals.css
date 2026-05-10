@@ -19,8 +19,12 @@
   --font-display: var(--font-cinzel);
 }
 
+html {
+  background: #000;
+}
+
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

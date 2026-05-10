@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const navLinks = [
-  { href: "/", label: "Home" },
   { href: "/our-story", label: "Our Story" },
   { href: "/details", label: "Details" },
   { href: "/rsvp", label: "RSVP" },
@@ -12,7 +12,14 @@ const navLinks = [
 ];
 
 export default function Navigation() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  if (pathname === "/password") return null;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-accent/20">
@@ -20,9 +27,9 @@ export default function Navigation() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="font-[var(--font-cinzel)] text-xl tracking-widest text-accent-light hover:text-foreground transition-colors"
+            className="font-[var(--font-cinzel)] text-lg tracking-widest text-accent-light hover:text-foreground transition-colors"
           >
-            N & K
+            HOME
           </Link>
 
           <button

@@ -132,7 +132,7 @@ export default function RsvpPage() {
         </div>
 
         {step === "search" && (
-          <form onSubmit={handleSearch} className="space-y-6 max-w-md mx-auto">
+          <form onSubmit={handleSearch} autoComplete="off" className="space-y-6 max-w-md mx-auto">
             <div>
               <label
                 htmlFor="firstName"
@@ -143,6 +143,7 @@ export default function RsvpPage() {
               <input
                 id="firstName"
                 type="text"
+                autoComplete="off"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 className="w-full bg-transparent border border-accent/30 px-4 py-3 text-foreground placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors"
@@ -160,6 +161,7 @@ export default function RsvpPage() {
               <input
                 id="lastName"
                 type="text"
+                autoComplete="off"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 className="w-full bg-transparent border border-accent/30 px-4 py-3 text-foreground placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors"

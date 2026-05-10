@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
 import Navigation from "@/app/components/Navigation";
+import PageFader from "@/app/components/PageFader";
+import moon from "@/app/assets/moon.png";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +37,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}
       >
+        <div className="fixed inset-0 -z-10 bg-black flex items-center justify-center pointer-events-none">
+          <Image
+            src={moon}
+            alt=""
+            priority
+            className="w-[60vmin] h-[60vmin] object-contain opacity-90"
+          />
+        </div>
         <Navigation />
-        {children}
+        <PageFader>{children}</PageFader>
       </body>
     </html>
   );
