@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import curtains from "@/app/assets/curtains.png";
 
 export default function PasswordPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
+  const fadeLinkRef = useRef<HTMLAnchorElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +20,7 @@ export default function PasswordPage() {
     });
 
     if (res.ok) {
-      router.push("/");
+      fadeLinkRef.current?.click();
     } else {
       setError("Wrong password");
       setPassword("");
@@ -29,7 +28,11 @@ export default function PasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-6" style={{ backgroundImage: `url("${curtains.src}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+    <div
+      className="min-h-screen bg-black flex items-center justify-center px-6 bg-[length:100%_auto] md:bg-cover bg-top md:bg-center bg-no-repeat"
+      style={{ backgroundImage: `url("${curtains.src}")` }}
+    >
+      <a ref={fadeLinkRef} href="/" className="hidden" aria-hidden tabIndex={-1} />
       <div className="w-full max-w-sm text-center">
         <form onSubmit={handleSubmit} className="space-y-2">
           <div className="relative">
