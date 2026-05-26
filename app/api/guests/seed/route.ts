@@ -1,32 +1,49 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import seedData from "@/prisma/seed-data.json";
 
-const SAMPLE_GUESTS = [
-  { firstName: "John", lastName: "Smith", partyId: "party-1" },
-  { firstName: "Jane", lastName: "Smith", partyId: "party-1" },
-  { firstName: "Michael", lastName: "Johnson", partyId: "party-2" },
-  { firstName: "Sarah", lastName: "Williams", partyId: "party-3" },
-  { firstName: "David", lastName: "Williams", partyId: "party-3" },
-  { firstName: "Emily", lastName: "Brown", partyId: "party-4" },
-];
+interface SeedMember {
+  firstName: string;
+  lastName: string;
+}
 
-export async function POST() {
-  if (process.env.NODE_ENV === "production") {
-    return NextResponse.json(
-      { error: "Seeding is not allowed in production" },
-      { status: 403 }
-    );
+interface SeedUnit {
+  partyId: string;
+  label: string;
+  members: SeedMember[];
+}
+
+export async function POST(request: Request) {
+  const authHeader = request.headers.get("authorization");
+  const adminSecret = process.env.ADMIN_SECRET;
+
+  if (!adminSecret || authHeader !== `Bearer ${adminSecret}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const created = await prisma.$transaction(
-      SAMPLE_GUESTS.map((guest) =>
-        prisma.guest.create({ data: guest })
-      )
+    const units = seedData as SeedUnit[];
+
+    await prisma.rsvp.deleteMany();
+    await prisma.guest.deleteMany();
+
+    const guests = units.flatMap((unit) =>
+      unit.members.map((member) => ({
+        firstName: member.firstName,
+        lastName: member.lastName,
+        partyId: unit.partyId,
+      }))
     );
 
-    return NextResponse.json({ success: true, count: created.length });
-  } catch {
+    const created = await prisma.guest.createMany({ data: guests });
+
+    return NextResponse.json({
+      success: true,
+      units: units.length,
+      guests: created.count,
+    });
+  } catch (error) {
+    console.error("Seed error:", error);
     return NextResponse.json(
       { error: "Failed to seed guests" },
       { status: 500 }

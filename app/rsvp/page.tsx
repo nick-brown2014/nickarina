@@ -27,14 +27,20 @@ interface Guest {
   } | null;
 }
 
-type Step = "search" | "rsvp" | "confirmation";
+interface Party {
+  partyId: string;
+  members: Guest[];
+}
+
+type Step = "search" | "select-party" | "rsvp" | "confirmation";
 
 export default function RsvpPage() {
   const [step, setStep] = useState<Step>("search");
-  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [guests, setGuests] = useState<Guest[]>([]);
+  const [parties, setParties] = useState<Party[]>([]);
+  const [selectedParty, setSelectedParty] = useState<Party | null>(null);
   const [rsvps, setRsvps] = useState<Record<string, GuestRsvp>>({});
+  const [currentMemberIndex, setCurrentMemberIndex] = useState(0);
   const [searchError, setSearchError] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +55,7 @@ export default function RsvpPage() {
       const res = await fetch("/api/rsvp/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName: firstName.trim(), lastName: lastName.trim() }),
+        body: JSON.stringify({ lastName: lastName.trim() }),
       });
 
       const data = await res.json();
@@ -59,22 +65,14 @@ export default function RsvpPage() {
         return;
       }
 
-      setGuests(data.guests);
+      const foundParties = data.parties as Party[];
+      setParties(foundParties);
 
-      const initialRsvps: Record<string, GuestRsvp> = {};
-      for (const guest of data.guests as Guest[]) {
-        initialRsvps[guest.id] = {
-          guestId: guest.id,
-          welcomeParty: guest.rsvp?.welcomeParty ?? false,
-          ceremony: guest.rsvp?.ceremony ?? false,
-          reception: guest.rsvp?.reception ?? false,
-          goodbyeBrunch: guest.rsvp?.goodbyeBrunch ?? false,
-          mealChoice: guest.rsvp?.mealChoice ?? null,
-          dietaryNotes: guest.rsvp?.dietaryNotes ?? "",
-        };
+      if (foundParties.length === 1) {
+        selectParty(foundParties[0]);
+      } else {
+        setStep("select-party");
       }
-      setRsvps(initialRsvps);
-      setStep("rsvp");
     } catch {
       setSearchError("Something went wrong. Please try again.");
     } finally {
@@ -82,7 +80,30 @@ export default function RsvpPage() {
     }
   };
 
-  const updateRsvp = (guestId: string, field: keyof GuestRsvp, value: boolean | string | null) => {
+  const selectParty = (party: Party) => {
+    setSelectedParty(party);
+    const initialRsvps: Record<string, GuestRsvp> = {};
+    for (const guest of party.members) {
+      initialRsvps[guest.id] = {
+        guestId: guest.id,
+        welcomeParty: guest.rsvp?.welcomeParty ?? false,
+        ceremony: guest.rsvp?.ceremony ?? false,
+        reception: guest.rsvp?.reception ?? false,
+        goodbyeBrunch: guest.rsvp?.goodbyeBrunch ?? false,
+        mealChoice: guest.rsvp?.mealChoice ?? null,
+        dietaryNotes: guest.rsvp?.dietaryNotes ?? "",
+      };
+    }
+    setRsvps(initialRsvps);
+    setCurrentMemberIndex(0);
+    setStep("rsvp");
+  };
+
+  const updateRsvp = (
+    guestId: string,
+    field: keyof GuestRsvp,
+    value: boolean | string | null
+  ) => {
     setRsvps((prev) => ({
       ...prev,
       [guestId]: { ...prev[guestId], [field]: value },
@@ -112,9 +133,23 @@ export default function RsvpPage() {
     }
   };
 
+  const members = selectedParty?.members ?? [];
+  const currentGuest = members[currentMemberIndex];
+  const isLastMember = currentMemberIndex === members.length - 1;
+  const isFirstMember = currentMemberIndex === 0;
+
   const anyAttending = Object.values(rsvps).some(
     (r) => r.welcomeParty || r.ceremony || r.reception || r.goodbyeBrunch
   );
+
+  const stepDescription: Record<Step, string> = {
+    search: "Please enter your last name to find your invitation.",
+    "select-party": "We found multiple groups. Please select yours.",
+    rsvp: currentGuest
+      ? `Responding for ${currentGuest.firstName}${currentGuest.lastName ? ` ${currentGuest.lastName}` : ""} (${currentMemberIndex + 1} of ${members.length})`
+      : "",
+    confirmation: "Thank you for your response!",
+  };
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-16 px-6">
@@ -124,33 +159,15 @@ export default function RsvpPage() {
             RSVP
           </h1>
           <div className="w-16 h-px bg-accent mx-auto mb-6" />
-          <p className="text-muted text-lg">
-            {step === "search" && "Please enter your name to find your invitation."}
-            {step === "rsvp" && "Please respond for each guest in your party."}
-            {step === "confirmation" && "Thank you for your response!"}
-          </p>
+          <p className="text-muted text-lg">{stepDescription[step]}</p>
         </div>
 
         {step === "search" && (
-          <form onSubmit={handleSearch} autoComplete="off" className="space-y-6 max-w-md mx-auto">
-            <div>
-              <label
-                htmlFor="firstName"
-                className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
-              >
-                First Name
-              </label>
-              <input
-                id="firstName"
-                type="text"
-                autoComplete="off"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="w-full bg-transparent border border-accent/30 px-4 py-3 text-foreground placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors"
-                placeholder="Enter your first name"
-                required
-              />
-            </div>
+          <form
+            onSubmit={handleSearch}
+            autoComplete="off"
+            className="space-y-6 max-w-md mx-auto"
+          >
             <div>
               <label
                 htmlFor="lastName"
@@ -177,87 +194,158 @@ export default function RsvpPage() {
             <button
               type="submit"
               disabled={isSearching}
-              className="w-full font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full font-[var(--font-cinzel)] cursor-pointer text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSearching ? "Searching..." : "Find My Invitation"}
             </button>
           </form>
         )}
 
-        {step === "rsvp" && (
-          <div className="space-y-10">
-            {guests.map((guest) => (
-              <div
-                key={guest.id}
-                className="border border-accent/20 p-6 md:p-8"
+        {step === "select-party" && (
+          <div className="space-y-4 max-w-md mx-auto">
+            {parties.map((party) => (
+              <button
+                key={party.partyId}
+                onClick={() => selectParty(party)}
+                className="w-full text-left border border-accent/30 p-5 hover:border-accent-light hover:bg-accent-light/5 transition-all duration-200"
               >
-                <h2 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-6">
-                  {guest.firstName} {guest.lastName}
-                </h2>
+                <p className="font-[var(--font-cinzel)] text-lg tracking-wider text-accent-light mb-1">
+                  {party.members
+                    .map(
+                      (m) =>
+                        `${m.firstName}${m.lastName ? ` ${m.lastName}` : ""}`
+                    )
+                    .join(", ")}
+                </p>
+                <p className="text-muted text-sm">
+                  {party.members.length}{" "}
+                  {party.members.length === 1 ? "guest" : "guests"}
+                </p>
+              </button>
+            ))}
 
-                <div className="space-y-6">
-                  <EventToggle
-                    label="Welcome Party"
-                    sublabel="October 30, 2026"
-                    checked={rsvps[guest.id]?.welcomeParty}
-                    onChange={(v) => updateRsvp(guest.id, "welcomeParty", v)}
-                  />
-                  <EventToggle
-                    label="Ceremony & Reception"
-                    sublabel="October 31, 2026"
-                    checked={rsvps[guest.id]?.ceremony}
-                    onChange={(v) => {
-                      updateRsvp(guest.id, "ceremony", v);
-                      updateRsvp(guest.id, "reception", v);
-                      if (!v) updateRsvp(guest.id, "mealChoice", null);
-                    }}
-                  />
-                  <EventToggle
-                    label="Goodbye Brunch"
-                    sublabel="November 1, 2026"
-                    checked={rsvps[guest.id]?.goodbyeBrunch}
-                    onChange={(v) => updateRsvp(guest.id, "goodbyeBrunch", v)}
-                  />
+            <button
+              onClick={() => {
+                setStep("search");
+                setParties([]);
+              }}
+              className="w-full font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 mt-6"
+            >
+              Back
+            </button>
+          </div>
+        )}
 
-                  {(rsvps[guest.id]?.ceremony || rsvps[guest.id]?.reception) && (
-                    <div className="pt-4 border-t border-accent/10">
-                      <p className="font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-4 uppercase">
-                        Meal Selection
-                      </p>
-                      <div className="flex gap-4">
-                        <MealOption
-                          label="Meat"
-                          selected={rsvps[guest.id]?.mealChoice === "MEAT"}
-                          onSelect={() => updateRsvp(guest.id, "mealChoice", "MEAT")}
-                        />
-                        <MealOption
-                          label="Vegetarian"
-                          selected={rsvps[guest.id]?.mealChoice === "VEGETARIAN"}
-                          onSelect={() => updateRsvp(guest.id, "mealChoice", "VEGETARIAN")}
-                        />
-                      </div>
-                    </div>
-                  )}
+        {step === "rsvp" && currentGuest && (
+          <div className="space-y-10">
+            {members.length > 1 && (
+              <div className="flex justify-center gap-2 mb-4">
+                {members.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      i === currentMemberIndex
+                        ? "bg-accent-light scale-125"
+                        : i < currentMemberIndex
+                          ? "bg-accent-light/50"
+                          : "bg-accent/30"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
 
+            <div className="border border-accent/20 p-6 md:p-8">
+              <h2 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-6">
+                {currentGuest.firstName}
+                {currentGuest.lastName ? ` ${currentGuest.lastName}` : ""}
+              </h2>
+
+              <div className="space-y-6">
+                <EventToggle
+                  label="Welcome Party"
+                  sublabel="October 30, 2026"
+                  checked={rsvps[currentGuest.id]?.welcomeParty}
+                  onChange={(v) =>
+                    updateRsvp(currentGuest.id, "welcomeParty", v)
+                  }
+                />
+                <EventToggle
+                  label="Ceremony & Reception"
+                  sublabel="October 31, 2026"
+                  checked={rsvps[currentGuest.id]?.ceremony}
+                  onChange={(v) => {
+                    updateRsvp(currentGuest.id, "ceremony", v);
+                    updateRsvp(currentGuest.id, "reception", v);
+                    if (!v) updateRsvp(currentGuest.id, "mealChoice", null);
+                  }}
+                />
+                <EventToggle
+                  label="Goodbye Brunch"
+                  sublabel="November 1, 2026"
+                  checked={rsvps[currentGuest.id]?.goodbyeBrunch}
+                  onChange={(v) =>
+                    updateRsvp(currentGuest.id, "goodbyeBrunch", v)
+                  }
+                />
+
+                {(rsvps[currentGuest.id]?.ceremony ||
+                  rsvps[currentGuest.id]?.reception) && (
                   <div className="pt-4 border-t border-accent/10">
-                    <label
-                      htmlFor={`dietary-${guest.id}`}
-                      className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
-                    >
-                      Dietary Restrictions or Notes
-                    </label>
-                    <textarea
-                      id={`dietary-${guest.id}`}
-                      value={rsvps[guest.id]?.dietaryNotes ?? ""}
-                      onChange={(e) => updateRsvp(guest.id, "dietaryNotes", e.target.value)}
-                      className="w-full bg-transparent border border-accent/30 px-4 py-3 text-foreground placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors resize-none"
-                      rows={2}
-                      placeholder="Any allergies or dietary requirements..."
-                    />
+                    <p className="font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-4 uppercase">
+                      Meal Selection
+                    </p>
+                    <div className="flex gap-4">
+                      <MealOption
+                        label="Meat"
+                        selected={
+                          rsvps[currentGuest.id]?.mealChoice === "MEAT"
+                        }
+                        onSelect={() =>
+                          updateRsvp(currentGuest.id, "mealChoice", "MEAT")
+                        }
+                      />
+                      <MealOption
+                        label="Vegetarian"
+                        selected={
+                          rsvps[currentGuest.id]?.mealChoice === "VEGETARIAN"
+                        }
+                        onSelect={() =>
+                          updateRsvp(
+                            currentGuest.id,
+                            "mealChoice",
+                            "VEGETARIAN"
+                          )
+                        }
+                      />
+                    </div>
                   </div>
+                )}
+
+                <div className="pt-4 border-t border-accent/10">
+                  <label
+                    htmlFor={`dietary-${currentGuest.id}`}
+                    className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
+                  >
+                    Dietary Restrictions or Notes
+                  </label>
+                  <textarea
+                    id={`dietary-${currentGuest.id}`}
+                    value={rsvps[currentGuest.id]?.dietaryNotes ?? ""}
+                    onChange={(e) =>
+                      updateRsvp(
+                        currentGuest.id,
+                        "dietaryNotes",
+                        e.target.value
+                      )
+                    }
+                    className="w-full bg-transparent border border-accent/30 px-4 py-3 text-foreground placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors resize-none"
+                    rows={2}
+                    placeholder="Any allergies or dietary requirements..."
+                  />
                 </div>
               </div>
-            ))}
+            </div>
 
             {submitError && (
               <p className="text-red-400 text-sm text-center">{submitError}</p>
@@ -265,18 +353,37 @@ export default function RsvpPage() {
 
             <div className="flex gap-4 pt-4">
               <button
-                onClick={() => setStep("search")}
+                onClick={() => {
+                  if (isFirstMember) {
+                    if (parties.length > 1) {
+                      setStep("select-party");
+                    } else {
+                      setStep("search");
+                    }
+                  } else {
+                    setCurrentMemberIndex((i) => i - 1);
+                  }
+                }}
                 className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
               >
                 Back
               </button>
-              <button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? "Submitting..." : "Submit RSVP"}
-              </button>
+              {isLastMember ? (
+                <button
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit RSVP"}
+                </button>
+              ) : (
+                <button
+                  onClick={() => setCurrentMemberIndex((i) => i + 1)}
+                  className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+                >
+                  Next Guest
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -284,8 +391,18 @@ export default function RsvpPage() {
         {step === "confirmation" && (
           <div className="text-center space-y-8">
             <div className="w-20 h-20 mx-auto border border-accent-light rounded-full flex items-center justify-center">
-              <svg className="w-10 h-10 text-accent-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-10 h-10 text-accent-light"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
 
@@ -304,20 +421,39 @@ export default function RsvpPage() {
             </div>
 
             <div className="pt-4 space-y-3">
-              {guests.map((guest) => {
+              {members.map((guest) => {
                 const r = rsvps[guest.id];
-                const attending = r?.welcomeParty || r?.ceremony || r?.reception || r?.goodbyeBrunch;
+                const attending =
+                  r?.welcomeParty ||
+                  r?.ceremony ||
+                  r?.reception ||
+                  r?.goodbyeBrunch;
                 return (
-                  <div key={guest.id} className="border border-accent/20 p-4 text-left">
+                  <div
+                    key={guest.id}
+                    className="border border-accent/20 p-4 text-left"
+                  >
                     <p className="font-[var(--font-cinzel)] text-lg text-accent-light mb-2">
-                      {guest.firstName} {guest.lastName}
+                      {guest.firstName}
+                      {guest.lastName ? ` ${guest.lastName}` : ""}
                     </p>
                     <div className="text-sm text-muted space-y-1">
                       {attending ? (
                         <>
                           {r.welcomeParty && <p>Welcome Party - Attending</p>}
-                          {r.ceremony && <p>Ceremony & Reception - Attending ({r.mealChoice ? r.mealChoice.charAt(0) + r.mealChoice.slice(1).toLowerCase() : "No meal selected"})</p>}
-                          {r.goodbyeBrunch && <p>Goodbye Brunch - Attending</p>}
+                          {r.ceremony && (
+                            <p>
+                              Ceremony &amp; Reception - Attending (
+                              {r.mealChoice
+                                ? r.mealChoice.charAt(0) +
+                                  r.mealChoice.slice(1).toLowerCase()
+                                : "No meal selected"}
+                              )
+                            </p>
+                          )}
+                          {r.goodbyeBrunch && (
+                            <p>Goodbye Brunch - Attending</p>
+                          )}
                         </>
                       ) : (
                         <p>Unable to attend</p>
@@ -331,10 +467,11 @@ export default function RsvpPage() {
             <button
               onClick={() => {
                 setStep("search");
-                setFirstName("");
                 setLastName("");
-                setGuests([]);
+                setParties([]);
+                setSelectedParty(null);
                 setRsvps({});
+                setCurrentMemberIndex(0);
               }}
               className="font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
             >
