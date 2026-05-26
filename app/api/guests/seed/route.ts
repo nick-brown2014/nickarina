@@ -10,7 +10,6 @@ interface SeedMember {
 interface SeedUnit {
   partyId: string;
   label: string;
-  source: string;
   members: SeedMember[];
 }
 
