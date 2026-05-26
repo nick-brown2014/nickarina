@@ -35,14 +35,12 @@ export async function POST(request: Request) {
       }))
     );
 
-    const created = await prisma.$transaction(
-      guests.map((guest) => prisma.guest.create({ data: guest }))
-    );
+    const created = await prisma.guest.createMany({ data: guests });
 
     return NextResponse.json({
       success: true,
       units: units.length,
-      guests: created.length,
+      guests: created.count,
     });
   } catch (error) {
     console.error("Seed error:", error);

@@ -194,7 +194,7 @@ export default function RsvpPage() {
             <button
               type="submit"
               disabled={isSearching}
-              className="w-full font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full font-[var(--font-cinzel)] cursor-pointer text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSearching ? "Searching..." : "Find My Invitation"}
             </button>

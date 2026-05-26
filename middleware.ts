@@ -3,10 +3,15 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const isAuthenticated = request.cookies.get("site_access")?.value === "granted";
-  const isPasswordPage = request.nextUrl.pathname === "/password";
-  const isPasswordApi = request.nextUrl.pathname === "/api/password";
+  const { pathname } = request.nextUrl;
+  const isPasswordPage = pathname === "/password";
+  const isPasswordApi = pathname === "/api/password";
+  const isAdminRoute =
+    pathname === "/admin" ||
+    pathname === "/api/rsvp/admin" ||
+    pathname === "/api/guests/seed";
 
-  if (isPasswordPage || isPasswordApi) {
+  if (isPasswordPage || isPasswordApi || isAdminRoute) {
     return NextResponse.next();
   }
 

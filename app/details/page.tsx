@@ -42,7 +42,7 @@ const roomBlocks = [
 
 export default function DetailsPage() {
   return (
-    <div className="relative min-h-screen bg-black pt-24 pb-16 px-6 overflow-hidden">
+    <div className="relative min-h-screen bg-black pt-24 pb-16 px-6">
       <Image
         src={ragnatela}
         alt=""
@@ -51,6 +51,30 @@ export default function DetailsPage() {
         className="pointer-events-none select-none absolute top-16 right-0 w-48 md:w-72 lg:w-96 h-auto opacity-80"
       />
       <div className="relative max-w-4xl mx-auto">
+
+        <nav
+          aria-label="Page sections"
+          className="sticky top-16 z-40 -mx-6 px-6 py-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-3 font-[var(--font-cinzel)] text-xs md:text-sm tracking-[0.2em] uppercase bg-black/80 backdrop-blur-sm border-b border-accent/20"
+        >
+          {[
+            { href: "#schedule", label: "Schedule" },
+            { href: "#venues", label: "Venues" },
+            { href: "#room-blocks", label: "Room Blocks" },
+            { href: "#theme", label: "Theme" },
+          ].map((link, i, arr) => (
+            <span key={link.href} className="flex items-center gap-x-2">
+              <a
+                href={link.href}
+                className="text-accent-light hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </a>
+              {i < arr.length - 1 && (
+                <span aria-hidden className="h-px w-6 bg-accent/40" />
+              )}
+            </span>
+          ))}
+        </nav>
 
         <div className="flex justify-center mt-8">
           <Image
@@ -61,7 +85,7 @@ export default function DetailsPage() {
           />
         </div>
 
-        <section className="text-center mt-4">
+        <section id="schedule" className="text-center mt-4 scroll-mt-40">
           <ol className="space-y-12">
             {schedule.map((event, idx) => (
               <li key={event.title}>
@@ -91,7 +115,7 @@ export default function DetailsPage() {
 
         <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
 
-        <section className="text-center">
+        <section id="venues" className="text-center scroll-mt-40">
           <h2 className="font-[var(--font-cinzel)] text-2xl md:text-3xl tracking-wider text-accent-light mb-12">
             Venues
           </h2>
@@ -146,7 +170,7 @@ export default function DetailsPage() {
 
         <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
 
-        <section className="text-center">
+        <section id="room-blocks" className="text-center scroll-mt-40">
           <h2 className="font-[var(--font-cinzel)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
             Room Blocks
           </h2>
@@ -174,6 +198,45 @@ export default function DetailsPage() {
                 </a>
               </div>
             ))}
+          </div>
+        </section>
+
+        <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
+
+        <section id="theme" className="text-center scroll-mt-40">
+          <h2 className="font-[var(--font-cinzel)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
+            Theme
+          </h2>
+          <p className="text-muted mb-12 max-w-xl mx-auto">
+            For inspiration on attire and aesthetic, take a peek at our Pinterest
+            boards. Links coming soon.
+          </p>
+          <div className="space-y-10">
+            <div>
+              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-foreground mb-6">
+                Welcome Party
+              </h3>
+              <a
+                href="#"
+                aria-disabled="true"
+                className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
+              >
+                Pinterest Board
+              </a>
+            </div>
+            <hr className="border-0 border-t border-accent/40 w-24 mx-auto" />
+            <div>
+              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-foreground mb-6">
+                Wedding
+              </h3>
+              <a
+                href="#"
+                aria-disabled="true"
+                className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
+              >
+                Pinterest Board
+              </a>
+            </div>
           </div>
         </section>
       </div>
