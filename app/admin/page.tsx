@@ -30,9 +30,14 @@ interface Stats {
   vegetarianCount: number;
 }
 
-type FilterType = "all" | "responded" | "not-responded" | "attending" | "declined";
+type FilterType =
+  | "all"
+  | "responded"
+  | "not-responded"
+  | "attending"
+  | "declined";
 
-export default function AdminRsvpPage() {
+export default function AdminPage() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(false);
@@ -84,13 +89,85 @@ export default function AdminRsvpPage() {
       case "not-responded":
         return g.rsvp === null;
       case "attending":
-        return g.rsvp?.welcomeParty || g.rsvp?.ceremony || g.rsvp?.reception || g.rsvp?.goodbyeBrunch;
+        return (
+          g.rsvp?.welcomeParty ||
+          g.rsvp?.ceremony ||
+          g.rsvp?.reception ||
+          g.rsvp?.goodbyeBrunch
+        );
       case "declined":
-        return g.rsvp !== null && !g.rsvp.welcomeParty && !g.rsvp.ceremony && !g.rsvp.reception && !g.rsvp.goodbyeBrunch;
+        return (
+          g.rsvp !== null &&
+          !g.rsvp.welcomeParty &&
+          !g.rsvp.ceremony &&
+          !g.rsvp.reception &&
+          !g.rsvp.goodbyeBrunch
+        );
       default:
         return true;
     }
   });
+
+  const exportToCSV = () => {
+    const headers = [
+      "First Name",
+      "Last Name",
+      "Party ID",
+      "Welcome Party",
+      "Ceremony",
+      "Reception",
+      "Goodbye Brunch",
+      "Meal Choice",
+      "Dietary Notes",
+      "Submitted At",
+    ];
+
+    const rows = filteredGuests.map((g) => [
+      g.firstName,
+      g.lastName,
+      g.partyId,
+      g.rsvp?.welcomeParty === true
+        ? "Yes"
+        : g.rsvp?.welcomeParty === false
+          ? "No"
+          : "Pending",
+      g.rsvp?.ceremony === true
+        ? "Yes"
+        : g.rsvp?.ceremony === false
+          ? "No"
+          : "Pending",
+      g.rsvp?.reception === true
+        ? "Yes"
+        : g.rsvp?.reception === false
+          ? "No"
+          : "Pending",
+      g.rsvp?.goodbyeBrunch === true
+        ? "Yes"
+        : g.rsvp?.goodbyeBrunch === false
+          ? "No"
+          : "Pending",
+      g.rsvp?.mealChoice || "N/A",
+      g.rsvp?.dietaryNotes || "",
+      g.rsvp?.submittedAt
+        ? new Date(g.rsvp.submittedAt).toLocaleDateString()
+        : "",
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `rsvp-export-${new Date().toISOString().split("T")[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   if (!authenticated) {
     return (
@@ -174,9 +251,17 @@ export default function AdminRsvpPage() {
           </div>
         )}
 
-        <div className="mb-6 flex flex-wrap gap-2">
-          {(["all", "responded", "not-responded", "attending", "declined"] as FilterType[]).map(
-            (f) => (
+        <div className="mb-6 flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap gap-2 flex-1">
+            {(
+              [
+                "all",
+                "responded",
+                "not-responded",
+                "attending",
+                "declined",
+              ] as FilterType[]
+            ).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
@@ -188,8 +273,27 @@ export default function AdminRsvpPage() {
               >
                 {f.replace("-", " ")}
               </button>
-            )
-          )}
+            ))}
+          </div>
+          <button
+            onClick={exportToCSV}
+            className="px-4 py-2 text-xs tracking-wider uppercase border border-accent/30 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-200 flex items-center gap-2"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+              />
+            </svg>
+            Export CSV
+          </button>
         </div>
 
         <div className="overflow-x-auto">
@@ -229,7 +333,8 @@ export default function AdminRsvpPage() {
                   className="border-b border-accent/10 hover:bg-accent/5 transition-colors"
                 >
                   <td className="py-3 px-4 text-foreground">
-                    {guest.firstName} {guest.lastName}
+                    {guest.firstName}
+                    {guest.lastName ? ` ${guest.lastName}` : ""}
                   </td>
                   <td className="py-3 px-4 text-muted text-sm">
                     {guest.partyId}
@@ -248,7 +353,8 @@ export default function AdminRsvpPage() {
                   </td>
                   <td className="py-3 px-4 text-muted text-sm">
                     {guest.rsvp?.mealChoice
-                      ? guest.rsvp.mealChoice.charAt(0) + guest.rsvp.mealChoice.slice(1).toLowerCase()
+                      ? guest.rsvp.mealChoice.charAt(0) +
+                        guest.rsvp.mealChoice.slice(1).toLowerCase()
                       : "-"}
                   </td>
                   <td className="py-3 px-4 text-muted text-sm max-w-[200px] truncate">
@@ -270,7 +376,13 @@ export default function AdminRsvpPage() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number | string }) {
+function StatCard({
+  label,
+  value,
+}: {
+  label: string;
+  value: number | string;
+}) {
   return (
     <div className="border border-accent/20 p-4 text-center">
       <p className="font-[var(--font-cinzel)] text-2xl text-accent-light mb-1">
