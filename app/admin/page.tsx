@@ -174,7 +174,7 @@ export default function AdminPage() {
       <div className="min-h-screen bg-background pt-24 pb-16 px-6 flex items-center justify-center">
         <form onSubmit={handleLogin} className="w-full max-w-sm space-y-6">
           <div className="text-center">
-            <h1 className="font-[var(--font-cinzel)] text-3xl tracking-wider text-foreground mb-4">
+            <h1 className="font-[var(--font-special-elite)] text-3xl tracking-wider text-foreground mb-4">
               Admin Access
             </h1>
             <div className="w-16 h-px bg-accent mx-auto mb-6" />
@@ -182,7 +182,7 @@ export default function AdminPage() {
           <div>
             <label
               htmlFor="adminSecret"
-              className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
+              className="block font-[var(--font-special-elite)] text-sm tracking-wider text-accent-light mb-2 uppercase"
             >
               Admin Secret
             </label>
@@ -202,7 +202,7 @@ export default function AdminPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Verifying..." : "Access Dashboard"}
           </button>
@@ -223,7 +223,7 @@ export default function AdminPage() {
     <div className="min-h-screen bg-background pt-24 pb-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="font-[var(--font-cinzel)] text-4xl tracking-wider text-foreground mb-4">
+          <h1 className="font-[var(--font-special-elite)] text-4xl tracking-wider text-foreground mb-4">
             RSVP Dashboard
           </h1>
           <div className="w-16 h-px bg-accent mx-auto" />
@@ -300,28 +300,28 @@ export default function AdminPage() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-accent/30">
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Name
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Party
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Welcome
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Ceremony
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Reception
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Brunch
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Meal
                 </th>
-                <th className="py-3 px-4 font-[var(--font-cinzel)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Notes
                 </th>
               </tr>
@@ -385,7 +385,7 @@ function StatCard({
 }) {
   return (
     <div className="border border-accent/20 p-4 text-center">
-      <p className="font-[var(--font-cinzel)] text-2xl text-accent-light mb-1">
+      <p className="font-[var(--font-special-elite)] text-2xl text-accent-light mb-1">
         {value}
       </p>
       <p className="text-muted text-xs tracking-wider uppercase">{label}</p>

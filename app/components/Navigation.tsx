@@ -27,7 +27,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="font-[var(--font-cinzel)] text-lg tracking-widest text-accent-light hover:text-foreground transition-colors"
+            className="font-[var(--font-special-elite)] text-lg tracking-widest text-accent-light hover:text-foreground transition-colors"
           >
             HOME
           </Link>
@@ -66,7 +66,7 @@ export default function Navigation() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="font-[var(--font-cinzel)] text-sm tracking-wider text-muted hover:text-accent-light transition-colors uppercase"
+                  className="font-[var(--font-special-elite)] text-sm tracking-wider text-muted hover:text-accent-light transition-colors uppercase"
                 >
                   {link.label}
                 </Link>
@@ -81,7 +81,7 @@ export default function Navigation() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="font-[var(--font-cinzel)] text-sm tracking-wider text-muted hover:text-accent-light transition-colors uppercase block"
+                  className="font-[var(--font-special-elite)] text-sm tracking-wider text-muted hover:text-accent-light transition-colors uppercase block"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}

@@ -23,8 +23,7 @@ export default function Home() {
             className="w-auto h-64 md:h-[26rem] lg:h-[32rem] object-contain"
             priority
           />
-          <span className="font-[var(--font-cinzel)] md:text-xl text-white">
-            &
+          <span className="font-[var(--font-special-elite)] md:text-xl text-white">
           </span>
           <Image
             src={karinaErnst}
@@ -37,10 +36,10 @@ export default function Home() {
         <div className="hero-content text-center px-6 max-w-4xl mx-auto">
 
           <div className="space-y-1 mb-12">
-            <p className="font-[var(--font-cinzel)] text-xl text-accent-light">
+            <p className="font-[var(--font-special-elite)] text-xl text-accent-light">
               October 31, 2026
             </p>
-            <p className="font-[var(--font-cinzel)] text-xl text-accent-light">
+            <p className="font-[var(--font-special-elite)] text-xl text-accent-light">
               Della Terra Mountain Chateau
             </p>
             <p className="text-muted">
@@ -50,7 +49,7 @@ export default function Home() {
 
           <Link
             href="/rsvp"
-            className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-12 py-2 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+            className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-12 py-2 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
           >
             RSVP
           </Link>
@@ -59,7 +58,7 @@ export default function Home() {
 
       <footer className="py-12 px-6 border-t border-accent/20">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-4">
+          <p className="font-[var(--font-special-elite)] text-2xl tracking-wider text-accent-light mb-4">
             N & K
           </p>
           <p className="text-muted text-sm">

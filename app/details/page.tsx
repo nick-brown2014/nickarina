@@ -1,29 +1,69 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import dellaterra from "@/app/assets/dellaterra.png";
 import ragnatela from "@/app/assets/ragnatela.png";
 import bat1 from "@/app/assets/bat1.png";
 
-const schedule = [
+type ScheduleEvent = {
+  date: string;
+  title: string;
+  time: ReactNode;
+  location: ReactNode;
+  attire: ReactNode;
+  description: ReactNode;
+};
+
+const schedule: ScheduleEvent[] = [
   {
     date: "Friday, October 30, 2026",
-    title: "Welcome Party",
-    time: "7:00 PM",
-    location: "The Bull Pin",
-    description: "Join us for a casual welcome gathering to kick off the weekend.",
+    title: "Costumed Welcome Party",
+    time: "7:00 - 9:00 PM",
+    location: (
+      <>
+        The Bull Pin - 555 S St Vrain Ave, Estes Park, CO 80517
+      </>
+    ),
+    attire: (
+      <>
+        Costumes Mandatory (No rules)
+      </>
+    ),
+    description: (
+      <>
+        <span className='text-accent-light'>Description</span>
+        <br/>
+        Join us for a festive Hallow's Eve soiree with bowling, games, and merriment.
+        <br/>
+        Food and drink will be provided. 
+        <br/>
+        <br/>
+        But I don't like costumes!
+        <br/>
+        No problem! <a className='text-accent-light hover:opacity-[80%]' href=''>Here are some costume ideas for people who don't like costumes</a>.
+      </>
+    ),
   },
   {
     date: "Saturday, October 31, 2026",
     title: "Ceremony & Reception",
-    time: "Sunset - 6:03 PM",
+    time: (<>
+      Please arrive no later than 5:00 PM
+      <br/>
+      Sunset ceremony will begin promptly at 5:30 PM, dinner and dancing to follow.
+      </>),
     location: "Della Terra Mountain Chateau",
-    description: "Ceremony to begin promptly at sunset with reception to follow.",
+    attire: "Strictly black formal. Goth Surrealist optional.",
+    description: (<>
+      For more information on preferred attire, please go to our <a className='text-accent-light hover:opacity-[80%]' href=''>theme page</a>
+    </>),
   },
   {
     date: "Sunday, November 1, 2026",
     title: "Farewell Brunch",
     time: "Details to come",
     location: "TBD",
-    description: "Send us off before we begin our next adventure.",
+    attire: "Casual",
+    description: "It's a farewell brunch! What more do you need to know?.",
   },
 ];
 
@@ -54,7 +94,7 @@ export default function DetailsPage() {
 
         <nav
           aria-label="Page sections"
-          className="sticky top-16 z-40 -mx-6 px-6 py-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-3 font-[var(--font-cinzel)] text-xs md:text-sm tracking-[0.2em] uppercase bg-black/80 backdrop-blur-sm border-b border-accent/20"
+          className="sticky top-16 z-40 -mx-6 px-6 py-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-3 font-[var(--font-special-elite)] text-xs md:text-sm tracking-[0.2em] uppercase bg-black/80 backdrop-blur-sm border-b border-accent/20"
         >
           {[
             { href: "#schedule", label: "Schedule" },
@@ -92,20 +132,24 @@ export default function DetailsPage() {
                 {idx > 0 && (
                   <hr className="border-0 border-t border-accent/40 w-24 mx-auto mb-12" />
                 )}
-                <p className="font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase text-accent-light mb-2">
+                <p className="font-[var(--font-special-elite)] text-xl tracking-[0.2em] uppercase text-accent-light mb-2">
                   {event.date}
                 </p>
-                <h3 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-foreground mb-3">
+                <h3 className="font-[var(--font-special-elite)] text-2xl tracking-wider text-foreground mb-3">
                   {event.title}
                 </h3>
-                <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-muted mb-3">
-                  <span>
+                <div className="text-muted space-y-1 mb-6">
+                  <p>
                     <span className="text-accent-light">Time:</span> {event.time}
-                  </span>
-                  <span>
+                  </p>
+                  <p>
                     <span className="text-accent-light">Location:</span>{" "}
                     {event.location}
-                  </span>
+                  </p>
+                  <p>
+                    <span className="text-accent-light">Attire:</span>{" "}
+                    {event.attire}
+                  </p>
                 </div>
                 <p className="text-muted leading-relaxed">{event.description}</p>
               </li>
@@ -116,7 +160,7 @@ export default function DetailsPage() {
         <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
 
         <section id="venues" className="text-center scroll-mt-40">
-          <h2 className="font-[var(--font-cinzel)] text-2xl md:text-3xl tracking-wider text-accent-light mb-12">
+          <h2 className="font-[var(--font-special-elite)] text-2xl md:text-3xl tracking-wider text-accent-light mb-12">
             Venues
           </h2>
           <div className="relative aspect-[16/9] max-w-3xl mx-auto mb-8 overflow-hidden">
@@ -127,7 +171,7 @@ export default function DetailsPage() {
               className="object-cover"
             />
           </div>
-          <h3 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-foreground mb-4">
+          <h3 className="font-[var(--font-special-elite)] text-2xl tracking-wider text-foreground mb-4">
             Della Terra Mountain Chateau
           </h3>
           <p className="text-muted mb-1">3501 Fall River Road</p>
@@ -142,13 +186,13 @@ export default function DetailsPage() {
               href="https://maps.google.com/?q=Della+Terra+Mountain+Chateau+Estes+Park+CO"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+              className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
             >
               Directions
             </a>
           </div>
 
-          <h3 className="font-[var(--font-cinzel)] mt-24 text-2xl tracking-wider text-foreground mb-4">
+          <h3 className="font-[var(--font-special-elite)] mt-24 text-2xl tracking-wider text-foreground mb-4">
             The Bull Pin
           </h3>
           <p className="text-muted mb-1">3501 Fall River Road</p>
@@ -162,7 +206,7 @@ export default function DetailsPage() {
             href="https://maps.google.com/?q=The+Bull+Pin+Estes+Park+CO"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+            className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
           >
             Directions
           </a>
@@ -171,7 +215,7 @@ export default function DetailsPage() {
         <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
 
         <section id="room-blocks" className="text-center scroll-mt-40">
-          <h2 className="font-[var(--font-cinzel)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
+          <h2 className="font-[var(--font-special-elite)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
             Room Blocks
           </h2>
           <p className="text-muted mb-12 max-w-xl mx-auto">
@@ -184,7 +228,7 @@ export default function DetailsPage() {
                 {idx > 0 && (
                   <hr className="border-0 border-t border-accent/40 w-24 mx-auto mb-10" />
                 )}
-                <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-foreground mb-3">
+                <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-3">
                   {hotel.name}
                 </h3>
                 <p className="text-muted mb-6">{hotel.note}</p>
@@ -192,7 +236,7 @@ export default function DetailsPage() {
                   href={hotel.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+                  className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
                 >
                   Reserve
                 </a>
@@ -204,7 +248,7 @@ export default function DetailsPage() {
         <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
 
         <section id="theme" className="text-center scroll-mt-40">
-          <h2 className="font-[var(--font-cinzel)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
+          <h2 className="font-[var(--font-special-elite)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
             Theme
           </h2>
           <p className="text-muted mb-12 max-w-xl mx-auto">
@@ -213,26 +257,26 @@ export default function DetailsPage() {
           </p>
           <div className="space-y-10">
             <div>
-              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-foreground mb-6">
+              <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-6">
                 Welcome Party
               </h3>
               <a
                 href="#"
                 aria-disabled="true"
-                className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
+                className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
               >
                 Pinterest Board
               </a>
             </div>
             <hr className="border-0 border-t border-accent/40 w-24 mx-auto" />
             <div>
-              <h3 className="font-[var(--font-cinzel)] text-xl tracking-wider text-foreground mb-6">
+              <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-6">
                 Wedding
               </h3>
               <a
                 href="#"
                 aria-disabled="true"
-                className="inline-block font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
+                className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
               >
                 Pinterest Board
               </a>

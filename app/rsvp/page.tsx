@@ -155,7 +155,7 @@ export default function RsvpPage() {
     <div className="min-h-screen bg-background pt-24 pb-16 px-6">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="font-[var(--font-cinzel)] text-4xl md:text-5xl tracking-wider text-foreground mb-4">
+          <h1 className="font-[var(--font-special-elite)] text-4xl md:text-5xl tracking-wider text-foreground mb-4">
             RSVP
           </h1>
           <div className="w-16 h-px bg-accent mx-auto mb-6" />
@@ -171,7 +171,7 @@ export default function RsvpPage() {
             <div>
               <label
                 htmlFor="lastName"
-                className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
+                className="block font-[var(--font-special-elite)] text-sm tracking-wider text-accent-light mb-2 uppercase"
               >
                 Last Name
               </label>
@@ -194,7 +194,7 @@ export default function RsvpPage() {
             <button
               type="submit"
               disabled={isSearching}
-              className="w-full font-[var(--font-cinzel)] cursor-pointer text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full font-[var(--font-special-elite)] cursor-pointer text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSearching ? "Searching..." : "Find My Invitation"}
             </button>
@@ -209,7 +209,7 @@ export default function RsvpPage() {
                 onClick={() => selectParty(party)}
                 className="w-full text-left border border-accent/30 p-5 hover:border-accent-light hover:bg-accent-light/5 transition-all duration-200"
               >
-                <p className="font-[var(--font-cinzel)] text-lg tracking-wider text-accent-light mb-1">
+                <p className="font-[var(--font-special-elite)] text-lg tracking-wider text-accent-light mb-1">
                   {party.members
                     .map(
                       (m) =>
@@ -229,7 +229,7 @@ export default function RsvpPage() {
                 setStep("search");
                 setParties([]);
               }}
-              className="w-full font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 mt-6"
+              className="w-full font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 mt-6"
             >
               Back
             </button>
@@ -256,7 +256,7 @@ export default function RsvpPage() {
             )}
 
             <div className="border border-accent/20 p-6 md:p-8">
-              <h2 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-6">
+              <h2 className="font-[var(--font-special-elite)] text-2xl tracking-wider text-accent-light mb-6">
                 {currentGuest.firstName}
                 {currentGuest.lastName ? ` ${currentGuest.lastName}` : ""}
               </h2>
@@ -292,7 +292,7 @@ export default function RsvpPage() {
                 {(rsvps[currentGuest.id]?.ceremony ||
                   rsvps[currentGuest.id]?.reception) && (
                   <div className="pt-4 border-t border-accent/10">
-                    <p className="font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-4 uppercase">
+                    <p className="font-[var(--font-special-elite)] text-sm tracking-wider text-accent-light mb-4 uppercase">
                       Meal Selection
                     </p>
                     <div className="flex gap-4">
@@ -325,7 +325,7 @@ export default function RsvpPage() {
                 <div className="pt-4 border-t border-accent/10">
                   <label
                     htmlFor={`dietary-${currentGuest.id}`}
-                    className="block font-[var(--font-cinzel)] text-sm tracking-wider text-accent-light mb-2 uppercase"
+                    className="block font-[var(--font-special-elite)] text-sm tracking-wider text-accent-light mb-2 uppercase"
                   >
                     Dietary Restrictions or Notes
                   </label>
@@ -364,7 +364,7 @@ export default function RsvpPage() {
                     setCurrentMemberIndex((i) => i - 1);
                   }
                 }}
-                className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
+                className="flex-1 font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
               >
                 Back
               </button>
@@ -372,14 +372,14 @@ export default function RsvpPage() {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Submitting..." : "Submit RSVP"}
                 </button>
               ) : (
                 <button
                   onClick={() => setCurrentMemberIndex((i) => i + 1)}
-                  className="flex-1 font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
+                  className="flex-1 font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300"
                 >
                   Next Guest
                 </button>
@@ -407,7 +407,7 @@ export default function RsvpPage() {
             </div>
 
             <div>
-              <h2 className="font-[var(--font-cinzel)] text-2xl tracking-wider text-accent-light mb-4">
+              <h2 className="font-[var(--font-special-elite)] text-2xl tracking-wider text-accent-light mb-4">
                 Response Recorded
               </h2>
               <p className="text-muted mb-2">
@@ -433,7 +433,7 @@ export default function RsvpPage() {
                     key={guest.id}
                     className="border border-accent/20 p-4 text-left"
                   >
-                    <p className="font-[var(--font-cinzel)] text-lg text-accent-light mb-2">
+                    <p className="font-[var(--font-special-elite)] text-lg text-accent-light mb-2">
                       {guest.firstName}
                       {guest.lastName ? ` ${guest.lastName}` : ""}
                     </p>
@@ -473,7 +473,7 @@ export default function RsvpPage() {
                 setRsvps({});
                 setCurrentMemberIndex(0);
               }}
-              className="font-[var(--font-cinzel)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
+              className="font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-8 py-4 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300"
             >
               RSVP for Another Guest
             </button>
@@ -498,7 +498,7 @@ function EventToggle({
   return (
     <div className="flex items-center justify-between">
       <div>
-        <p className="font-[var(--font-cinzel)] text-lg tracking-wider text-foreground">
+        <p className="font-[var(--font-special-elite)] text-lg tracking-wider text-foreground">
           {label}
         </p>
         <p className="text-muted text-sm">{sublabel}</p>

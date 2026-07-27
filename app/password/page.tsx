@@ -67,7 +67,7 @@ export default function PasswordPage() {
           <div className="flex justify-end overflow-hidden">
             <button
               type="submit"
-              className={`font-[var(--font-cinzel)] cursor-pointer text-sm tracking-[0.2em] uppercase text-red-400 transition-all duration-300 ${password ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+              className={`font-[var(--font-special-elite)] cursor-pointer text-sm tracking-[0.2em] uppercase text-red-400 transition-all duration-300 ${password ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             >
               Enter →
             </button>
