@@ -707,11 +707,11 @@
   },
   {
     "partyId": "party-54",
-    "label": "Aleksei Larue",
+    "label": "Aleksei LaRue",
     "members": [
       {
         "firstName": "Aleksei",
-        "lastName": "Larue"
+        "lastName": "LaRue"
       }
     ]
   },
@@ -1229,7 +1229,7 @@
   },
   {
     "partyId": "party-95",
-    "label": "Leo Stout",
+    "label": "Leo",
     "members": [
       {
         "firstName": "Leo",
