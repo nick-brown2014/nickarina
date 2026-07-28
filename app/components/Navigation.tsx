@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/details", label: "Details" },
   { href: "/theme", label: "Theme" },
   { href: "/rsvp", label: "RSVP" },
+  { href: "/rsvp-status", label: "RSVP Status" },
   { href: "/registry", label: "Registry" },
 ];
 
