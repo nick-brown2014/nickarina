@@ -39,7 +39,7 @@ const schedule: ScheduleEvent[] = [
         <br/>
         But I don't like costumes!
         <br/>
-        No problem! <a className='text-accent-light hover:opacity-[80%]' href=''>Here are some costume ideas for people who don't like costumes</a>.
+        No problem! Here are some <a className='text-accent-light hover:opacity-[80%]' href='https://lifehacker.com/best-lazy-last-minute-halloween-costumes' target='_blank' rel='noopener noreferrer'>costumes for people who don't like costumes</a>.
       </>
     ),
   },
@@ -54,7 +54,7 @@ const schedule: ScheduleEvent[] = [
     location: "Della Terra Mountain Chateau",
     attire: "Strictly black formal. Goth Surrealist optional.",
     description: (<>
-      For more information on preferred attire, please go to our <a className='text-accent-light hover:opacity-[80%]' href=''>theme page</a>
+      For more information on preferred attire, please go to our <a className='text-accent-light hover:opacity-[80%]' href='/theme'>theme page</a>
     </>),
   },
   {
@@ -100,7 +100,6 @@ export default function DetailsPage() {
             { href: "#schedule", label: "Schedule" },
             { href: "#venues", label: "Venues" },
             { href: "#room-blocks", label: "Room Blocks" },
-            { href: "#theme", label: "Theme" },
           ].map((link, i, arr) => (
             <span key={link.href} className="flex items-center gap-x-2">
               <a
@@ -242,45 +241,6 @@ export default function DetailsPage() {
                 </a>
               </div>
             ))}
-          </div>
-        </section>
-
-        <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
-
-        <section id="theme" className="text-center scroll-mt-40">
-          <h2 className="font-[var(--font-special-elite)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
-            Theme
-          </h2>
-          <p className="text-muted mb-12 max-w-xl mx-auto">
-            For inspiration on attire and aesthetic, take a peek at our Pinterest
-            boards. Links coming soon.
-          </p>
-          <div className="space-y-10">
-            <div>
-              <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-6">
-                Welcome Party
-              </h3>
-              <a
-                href="#"
-                aria-disabled="true"
-                className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
-              >
-                Pinterest Board
-              </a>
-            </div>
-            <hr className="border-0 border-t border-accent/40 w-24 mx-auto" />
-            <div>
-              <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-6">
-                Wedding
-              </h3>
-              <a
-                href="#"
-                aria-disabled="true"
-                className="inline-block font-[var(--font-special-elite)] text-sm tracking-[0.2em] uppercase px-6 py-3 border border-accent/40 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-300 pointer-events-none opacity-50"
-              >
-                Pinterest Board
-              </a>
-            </div>
           </div>
         </section>
       </div>
