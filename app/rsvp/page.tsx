@@ -67,12 +67,7 @@ export default function RsvpPage() {
 
       const foundParties = data.parties as Party[];
       setParties(foundParties);
-
-      if (foundParties.length === 1) {
-        selectParty(foundParties[0]);
-      } else {
-        setStep("select-party");
-      }
+      setStep("select-party");
     } catch {
       setSearchError("Something went wrong. Please try again.");
     } finally {
@@ -144,7 +139,10 @@ export default function RsvpPage() {
 
   const stepDescription: Record<Step, string> = {
     search: "Please enter your last name to find your invitation.",
-    "select-party": "We found multiple groups. Please select yours.",
+    "select-party":
+      parties.length === 1
+        ? "We found your group. Please confirm it below."
+        : "We found multiple groups. Please select yours.",
     rsvp: currentGuest
       ? `Responding for ${currentGuest.firstName}${currentGuest.lastName ? ` ${currentGuest.lastName}` : ""} (${currentMemberIndex + 1} of ${members.length})`
       : "",

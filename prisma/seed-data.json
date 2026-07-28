@@ -621,7 +621,7 @@
       },
       {
         "firstName": "Adrienne",
-        "lastName": "Hiew"
+        "lastName": "Aguirre Deschais"
       }
     ]
   },
@@ -707,10 +707,10 @@
   },
   {
     "partyId": "party-54",
-    "label": "Aleksie LaRue",
+    "label": "Aleksei LaRue",
     "members": [
       {
-        "firstName": "Aleksie",
+        "firstName": "Aleksei",
         "lastName": "LaRue"
       }
     ]
@@ -749,7 +749,7 @@
     "members": [
       {
         "firstName": "Gavin",
-        "lastName": "Nackbar"
+        "lastName": "Nachbar"
       },
       {
         "firstName": "Kelly",
@@ -1224,6 +1224,30 @@
       {
         "firstName": "Kale",
         "lastName": "Howard"
+      }
+    ]
+  },
+  {
+    "partyId": "party-95",
+    "label": "Leo",
+    "members": [
+      {
+        "firstName": "Leo",
+        "lastName": "Stout"
+      }
+    ]
+  },
+  {
+    "partyId": "party-96",
+    "label": "Nick, Elle",
+    "members": [
+      {
+        "firstName": "Nick",
+        "lastName": "Bender"
+      },
+      {
+        "firstName": "Elle",
+        "lastName": "Bender"
       }
     ]
   }
