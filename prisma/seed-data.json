@@ -239,15 +239,15 @@
     "members": [
       {
         "firstName": "Noradeen",
-        "lastName": "Morisson"
+        "lastName": "Morrison"
       },
       {
         "firstName": "Don",
-        "lastName": "Morisson"
+        "lastName": "Morrison"
       },
       {
         "firstName": "Olivia",
-        "lastName": "Morisson"
+        "lastName": "Morrison"
       }
     ]
   },
@@ -621,7 +621,7 @@
       },
       {
         "firstName": "Adrienne",
-        "lastName": "Hiew"
+        "lastName": "Aguirre Deschais"
       }
     ]
   },
@@ -631,11 +631,11 @@
     "members": [
       {
         "firstName": "Taylor",
-        "lastName": "VanBerkel"
+        "lastName": "Van Burkel"
       },
       {
         "firstName": "Lizzie",
-        "lastName": "VanBerkel"
+        "lastName": "Van Burkel"
       }
     ]
   },
@@ -707,11 +707,11 @@
   },
   {
     "partyId": "party-54",
-    "label": "Aleksie LaRue",
+    "label": "Aleksei Larue",
     "members": [
       {
-        "firstName": "Aleksie",
-        "lastName": "LaRue"
+        "firstName": "Aleksei",
+        "lastName": "Larue"
       }
     ]
   },
@@ -749,7 +749,7 @@
     "members": [
       {
         "firstName": "Gavin",
-        "lastName": "Nackbar"
+        "lastName": "Nachbar"
       },
       {
         "firstName": "Kelly",
@@ -1224,6 +1224,30 @@
       {
         "firstName": "Kale",
         "lastName": "Howard"
+      }
+    ]
+  },
+  {
+    "partyId": "party-95",
+    "label": "Leo Stout",
+    "members": [
+      {
+        "firstName": "Leo",
+        "lastName": "Stout"
+      }
+    ]
+  },
+  {
+    "partyId": "party-96",
+    "label": "Nick, Elle",
+    "members": [
+      {
+        "firstName": "Nick",
+        "lastName": "Bender"
+      },
+      {
+        "firstName": "Elle",
+        "lastName": "Bender"
       }
     ]
   }
