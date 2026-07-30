@@ -4,6 +4,25 @@ import dellaterra from "@/app/assets/dellaterra.png";
 import ragnatela from "@/app/assets/ragnatela.png";
 import bat1 from "@/app/assets/bat1.png";
 
+function MapLink({
+  query,
+  children,
+}: {
+  query: string;
+  children: ReactNode;
+}) {
+  return (
+    <a
+      className="text-accent-light hover:opacity-[80%] underline decoration-accent/40 underline-offset-4"
+      href={`https://maps.google.com/?q=${encodeURIComponent(query)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </a>
+  );
+}
+
 type ScheduleEvent = {
   date: string;
   title: string;
@@ -17,15 +36,17 @@ const schedule: ScheduleEvent[] = [
   {
     date: "Friday, October 30, 2026",
     title: "Costumed Welcome Party",
-    time: "7:00 - 9:00 PM",
+    time: "6:00 - 9:00 PM",
     location: (
       <>
-        The Bull Pin - 555 S St Vrain Ave, Estes Park, CO 80517
+        <MapLink query="The Bull Pin, 555 S St Vrain Ave, Estes Park, CO 80517">
+          The Bull Pin
+        </MapLink>
       </>
     ),
     attire: (
       <>
-        Costumes Mandatory (No rules)
+        Halloween costumes Mandatory (No rules)
       </>
     ),
     description: (
@@ -51,8 +72,16 @@ const schedule: ScheduleEvent[] = [
       <br/>
       Sunset ceremony will begin promptly at 5:30 PM, dinner and dancing to follow.
       </>),
-    location: "Della Terra Mountain Chateau",
-    attire: "Strictly black formal. Goth Surrealist optional.",
+    location: (<>
+      <MapLink query="Della Terra Mountain Chateau, 3501 Fall River Rd, Estes Park, CO 80517">
+        Della Terra Mountain Chateau
+      </MapLink>
+      </>
+    ),
+    attire: (<>Formal attire in strictly the color <span className='font-bold'>BLACK</span>.
+    <br/>
+      Optional (but encouraged) theme: GOTH SURREALIST.
+    </>),
     description: (<>
       For more information on preferred attire, please go to our <a className='text-accent-light hover:opacity-[80%]' href='/theme'>theme page</a>
     </>),
@@ -173,8 +202,13 @@ export default function DetailsPage() {
           <h3 className="font-[var(--font-special-elite)] text-2xl tracking-wider text-foreground mb-4">
             Della Terra Mountain Chateau
           </h3>
-          <p className="text-muted mb-1">3501 Fall River Road</p>
-          <p className="text-muted mb-6">Estes Park, CO 80517</p>
+          <p className="text-muted mb-6">
+            <MapLink query="Della Terra Mountain Chateau, 3501 Fall River Rd, Estes Park, CO 80517">
+              3501 Fall River Road
+              <br />
+              Estes Park, CO 80517
+            </MapLink>
+          </p>
           <p className="text-muted leading-relaxed mb-8 max-w-xl mx-auto">
             Nestled in the mountains of Colorado, Della Terra provides a
             breathtaking backdrop for the ceremony and reception on All
@@ -194,8 +228,13 @@ export default function DetailsPage() {
           <h3 className="font-[var(--font-special-elite)] mt-24 text-2xl tracking-wider text-foreground mb-4">
             The Bull Pin
           </h3>
-          <p className="text-muted mb-1">3501 Fall River Road</p>
-          <p className="text-muted mb-6">Estes Park, CO 80517</p>
+          <p className="text-muted mb-6">
+            <MapLink query="The Bull Pin, 555 S St Vrain Ave, Estes Park, CO 80517">
+              555 S St Vrain Ave
+              <br />
+              Estes Park, CO 80517
+            </MapLink>
+          </p>
           <p className="text-muted leading-relaxed mb-8 max-w-xl mx-auto">
             Join us in your Halloween costume for a fun and relaxed gathering
             at The Bull Pin in Estes Park, CO. Food and drinks will be provided,

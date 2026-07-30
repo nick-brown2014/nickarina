@@ -3,24 +3,18 @@
 import { useEffect } from "react";
 
 const boards = [
+    {
+    title: "\u201CGoth Surrealist Inspo\u201D",
+    description:
+      "heeheeheeheeheeheeheeheeheheehehheehee",
+    url: "https://www.pinterest.com/krackerbarrel/goth-surrealist-inspiration/",
+  },
   {
     title: "\u201CI hate themed weddings, don't make me do this\u201D",
     description:
       "No theme required. Black formal attire is all we ask.",
     url: "https://www.pinterest.com/krackerbarrel/i-hate-themed-weddings-dont-make-me-do-this/",
-  },
-  {
-    title: "\u201CI am willing to try! But I need some ideas\u201D",
-    description:
-      "A little inspiration to nudge you toward the Goth Surrealist side.",
-    url: "https://www.pinterest.com/krackerbarrel/goth-surrealist-inspiration/",
-  },
-  {
-    title: "\u201CI will be going all-out, maximum effort\u201D",
-    description:
-      "You understand the assignment. Full send.",
-    url: "https://www.pinterest.com/krackerbarrel/i-understand-the-assignment-and-will-full-send/",
-  },
+  }
 ];
 
 export default function ThemePage() {
@@ -41,9 +35,9 @@ export default function ThemePage() {
         <h1 className="font-[var(--font-special-elite)] text-3xl md:text-4xl tracking-wider text-accent-light mt-8 mb-4">
           Theme
         </h1>
-        <p className="text-muted leading-relaxed mb-16 max-w-xl mx-auto">
-          For inspiration on attire and aesthetic, take a peek at our Pinterest
-          boards below.
+        <p className="text-muted leading-relaxed mb-16 max-w-[800px] mx-auto">
+          Guests are warmly encouraged (but not required) to interpret the theme through their attire. Our inspiration is Gothic Surrealism - see pinterest board for inspiration (here you combine both themed pinterest boards where there are varying levels of theme)
+          The theme is entirely optional; a classic formal black outfit is perfectly appropriate.
         </p>
 
         <div className="space-y-20">
@@ -71,6 +65,12 @@ export default function ThemePage() {
               </div>
             </section>
           ))}
+          <h2 className="font-[var(--font-special-elite)] text-2xl tracking-wider text-foreground mb-3">
+            Still have questions?
+          </h2>
+          <p className="text-muted mb-8 max-w-xl mx-auto">
+            For more information on attire or general questions, please reach out to our maid of honor at <a className="text-accent-light hover:opacity-[80%]" href='mailto:helenawernst@gmail.com'>helenawernst@gmail.com</a>
+          </p>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/theme", label: "Theme" },
   { href: "/rsvp", label: "RSVP" },
   { href: "/registry", label: "Registry" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export default function Navigation() {
