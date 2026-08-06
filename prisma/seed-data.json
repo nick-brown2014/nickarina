@@ -295,14 +295,14 @@
   },
   {
     "partyId": "party-22",
-    "label": "Sarah, James",
+    "label": "Sarah, Tyler",
     "members": [
       {
         "firstName": "Sarah",
         "lastName": "Cunningham"
       },
       {
-        "firstName": "James",
+        "firstName": "Tyler",
         "lastName": "Cunningham"
       }
     ]
