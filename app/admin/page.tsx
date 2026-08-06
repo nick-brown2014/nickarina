@@ -9,7 +9,9 @@ interface Guest {
   partyId: string;
   rsvp: {
     welcomeParty: boolean | null;
+    welcomePartyShuttle: boolean | null;
     ceremony: boolean | null;
+    ceremonyShuttle: boolean | null;
     reception: boolean | null;
     goodbyeBrunch: boolean | null;
     mealChoice: "MEAT" | "VEGETARIAN" | null;
@@ -26,6 +28,8 @@ interface Stats {
   attendingCeremony: number;
   attendingReception: number;
   attendingBrunch: number;
+  welcomeShuttleCount: number;
+  ceremonyShuttleCount: number;
   meatCount: number;
   vegetarianCount: number;
 }
@@ -114,7 +118,9 @@ export default function AdminPage() {
       "Last Name",
       "Party ID",
       "Welcome Party",
+      "Welcome Shuttle",
       "Ceremony",
+      "Ceremony Shuttle",
       "Reception",
       "Goodbye Brunch",
       "Meal Choice",
@@ -131,11 +137,21 @@ export default function AdminPage() {
         : g.rsvp?.welcomeParty === false
           ? "No"
           : "Pending",
+      g.rsvp?.welcomePartyShuttle === true
+        ? "Yes"
+        : g.rsvp?.welcomePartyShuttle === false
+          ? "No"
+          : "N/A",
       g.rsvp?.ceremony === true
         ? "Yes"
         : g.rsvp?.ceremony === false
           ? "No"
           : "Pending",
+      g.rsvp?.ceremonyShuttle === true
+        ? "Yes"
+        : g.rsvp?.ceremonyShuttle === false
+          ? "No"
+          : "N/A",
       g.rsvp?.reception === true
         ? "Yes"
         : g.rsvp?.reception === false
@@ -246,6 +262,14 @@ export default function AdminPage() {
             <StatCard label="Ceremony" value={stats.attendingCeremony} />
             <StatCard label="Reception" value={stats.attendingReception} />
             <StatCard label="Goodbye Brunch" value={stats.attendingBrunch} />
+            <StatCard
+              label="Welcome Shuttle"
+              value={stats.welcomeShuttleCount}
+            />
+            <StatCard
+              label="Ceremony Shuttle"
+              value={stats.ceremonyShuttleCount}
+            />
             <StatCard label="Meat" value={stats.meatCount} />
             <StatCard label="Vegetarian" value={stats.vegetarianCount} />
           </div>
@@ -310,7 +334,13 @@ export default function AdminPage() {
                   Welcome
                 </th>
                 <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                  W. Shuttle
+                </th>
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Ceremony
+                </th>
+                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                  C. Shuttle
                 </th>
                 <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
                   Reception
@@ -343,7 +373,13 @@ export default function AdminPage() {
                     <RsvpBadge value={guest.rsvp?.welcomeParty ?? null} />
                   </td>
                   <td className="py-3 px-4">
+                    <RsvpBadge value={guest.rsvp?.welcomePartyShuttle ?? null} />
+                  </td>
+                  <td className="py-3 px-4">
                     <RsvpBadge value={guest.rsvp?.ceremony ?? null} />
+                  </td>
+                  <td className="py-3 px-4">
+                    <RsvpBadge value={guest.rsvp?.ceremonyShuttle ?? null} />
                   </td>
                   <td className="py-3 px-4">
                     <RsvpBadge value={guest.rsvp?.reception ?? null} />

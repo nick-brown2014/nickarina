@@ -26,6 +26,13 @@ export async function GET() {
     const attendingReception = guests.filter((g) => g.rsvp?.reception).length;
     const attendingBrunch = guests.filter((g) => g.rsvp?.goodbyeBrunch).length;
 
+    const welcomeShuttleCount = guests.filter(
+      (g) => g.rsvp?.welcomePartyShuttle
+    ).length;
+    const ceremonyShuttleCount = guests.filter(
+      (g) => g.rsvp?.ceremonyShuttle
+    ).length;
+
     const meatCount = guests.filter(
       (g) => g.rsvp?.mealChoice === "MEAT"
     ).length;
@@ -42,6 +49,8 @@ export async function GET() {
         attendingCeremony,
         attendingReception,
         attendingBrunch,
+        welcomeShuttleCount,
+        ceremonyShuttleCount,
         meatCount,
         vegetarianCount,
       },

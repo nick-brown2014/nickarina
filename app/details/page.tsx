@@ -28,6 +28,7 @@ type ScheduleEvent = {
   title: string;
   time: ReactNode;
   location: ReactNode;
+  transportation: ReactNode;
   attire: ReactNode;
   description: ReactNode;
 };
@@ -44,6 +45,7 @@ const schedule: ScheduleEvent[] = [
         </MapLink>
       </>
     ),
+    transportation: "Provided (shuttles from the designated hotels)",
     attire: (
       <>
         Halloween costumes Mandatory (No rules)
@@ -78,6 +80,7 @@ const schedule: ScheduleEvent[] = [
       </MapLink>
       </>
     ),
+    transportation: "Provided (shuttles from the designated hotels)",
     attire: (<>Formal attire in strictly the color <span className='font-bold'>BLACK</span>.
     <br/>
       Optional (but encouraged) theme: GOTH SURREALIST.
@@ -91,6 +94,7 @@ const schedule: ScheduleEvent[] = [
     title: "Farewell Brunch",
     time: "Details to come",
     location: "TBD",
+    transportation: "Not provided",
     attire: "Casual",
     description: "It's a farewell brunch! What more do you need to know?.",
   },
@@ -173,6 +177,10 @@ export default function DetailsPage() {
                   <p>
                     <span className="text-accent-light">Location:</span>{" "}
                     {event.location}
+                  </p>
+                  <p>
+                    <span className="text-accent-light">Transportation:</span>{" "}
+                    {event.transportation}
                   </p>
                   <p>
                     <span className="text-accent-light">Attire:</span>{" "}

@@ -26,7 +26,9 @@ model Rsvp {
   guestId        String     @unique
   guest          Guest      @relation(fields: [guestId], references: [id], onDelete: Cascade)
   welcomeParty   Boolean?
+  welcomePartyShuttle Boolean?
   ceremony       Boolean?
+  ceremonyShuttle Boolean?
   reception      Boolean?
   goodbyeBrunch  Boolean?
   mealChoice     MealChoice?

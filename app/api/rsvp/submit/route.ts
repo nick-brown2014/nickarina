@@ -4,7 +4,9 @@ import { prisma } from "@/app/lib/prisma";
 interface RsvpData {
   guestId: string;
   welcomeParty: boolean;
+  welcomePartyShuttle: boolean;
   ceremony: boolean;
+  ceremonyShuttle: boolean;
   reception: boolean;
   goodbyeBrunch: boolean;
   mealChoice: "MEAT" | "VEGETARIAN" | null;
@@ -28,7 +30,14 @@ export async function POST(request: Request) {
           where: { guestId: rsvp.guestId },
           update: {
             welcomeParty: rsvp.welcomeParty,
+            welcomePartyShuttle: rsvp.welcomeParty
+              ? Boolean(rsvp.welcomePartyShuttle)
+              : null,
             ceremony: rsvp.ceremony,
+            ceremonyShuttle:
+              rsvp.ceremony || rsvp.reception
+                ? Boolean(rsvp.ceremonyShuttle)
+                : null,
             reception: rsvp.reception,
             goodbyeBrunch: rsvp.goodbyeBrunch,
             mealChoice: rsvp.ceremony || rsvp.reception ? rsvp.mealChoice : null,
@@ -38,7 +47,14 @@ export async function POST(request: Request) {
           create: {
             guestId: rsvp.guestId,
             welcomeParty: rsvp.welcomeParty,
+            welcomePartyShuttle: rsvp.welcomeParty
+              ? Boolean(rsvp.welcomePartyShuttle)
+              : null,
             ceremony: rsvp.ceremony,
+            ceremonyShuttle:
+              rsvp.ceremony || rsvp.reception
+                ? Boolean(rsvp.ceremonyShuttle)
+                : null,
             reception: rsvp.reception,
             goodbyeBrunch: rsvp.goodbyeBrunch,
             mealChoice: rsvp.ceremony || rsvp.reception ? rsvp.mealChoice : null,

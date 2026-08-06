@@ -5,7 +5,9 @@ import { useState } from "react";
 interface GuestRsvp {
   guestId: string;
   welcomeParty: boolean;
+  welcomePartyShuttle: boolean;
   ceremony: boolean;
+  ceremonyShuttle: boolean;
   reception: boolean;
   goodbyeBrunch: boolean;
   mealChoice: "MEAT" | "VEGETARIAN" | null;
@@ -19,7 +21,9 @@ interface Guest {
   partyId: string;
   rsvp: {
     welcomeParty: boolean | null;
+    welcomePartyShuttle: boolean | null;
     ceremony: boolean | null;
+    ceremonyShuttle: boolean | null;
     reception: boolean | null;
     goodbyeBrunch: boolean | null;
     mealChoice: "MEAT" | "VEGETARIAN" | null;
@@ -82,7 +86,9 @@ export default function RsvpPage() {
       initialRsvps[guest.id] = {
         guestId: guest.id,
         welcomeParty: guest.rsvp?.welcomeParty ?? false,
+        welcomePartyShuttle: guest.rsvp?.welcomePartyShuttle ?? false,
         ceremony: guest.rsvp?.ceremony ?? false,
+        ceremonyShuttle: guest.rsvp?.ceremonyShuttle ?? false,
         reception: guest.rsvp?.reception ?? false,
         goodbyeBrunch: guest.rsvp?.goodbyeBrunch ?? false,
         mealChoice: guest.rsvp?.mealChoice ?? null,
@@ -264,10 +270,21 @@ export default function RsvpPage() {
                   label="Welcome Party"
                   sublabel="October 30, 2026"
                   checked={rsvps[currentGuest.id]?.welcomeParty}
-                  onChange={(v) =>
-                    updateRsvp(currentGuest.id, "welcomeParty", v)
-                  }
+                  onChange={(v) => {
+                    updateRsvp(currentGuest.id, "welcomeParty", v);
+                    if (!v)
+                      updateRsvp(currentGuest.id, "welcomePartyShuttle", false);
+                  }}
                 />
+                {rsvps[currentGuest.id]?.welcomeParty && (
+                  <ShuttleToggle
+                    label="Will you be using the provided transportation (shuttles) from the designated hotels for this event?"
+                    checked={rsvps[currentGuest.id]?.welcomePartyShuttle}
+                    onChange={(v) =>
+                      updateRsvp(currentGuest.id, "welcomePartyShuttle", v)
+                    }
+                  />
+                )}
                 <EventToggle
                   label="Ceremony & Reception"
                   sublabel="October 31, 2026"
@@ -275,9 +292,21 @@ export default function RsvpPage() {
                   onChange={(v) => {
                     updateRsvp(currentGuest.id, "ceremony", v);
                     updateRsvp(currentGuest.id, "reception", v);
-                    if (!v) updateRsvp(currentGuest.id, "mealChoice", null);
+                    if (!v) {
+                      updateRsvp(currentGuest.id, "mealChoice", null);
+                      updateRsvp(currentGuest.id, "ceremonyShuttle", false);
+                    }
                   }}
                 />
+                {rsvps[currentGuest.id]?.ceremony && (
+                  <ShuttleToggle
+                    label="Will you be using the provided transportation (shuttles) from the designated hotels for this event?"
+                    checked={rsvps[currentGuest.id]?.ceremonyShuttle}
+                    onChange={(v) =>
+                      updateRsvp(currentGuest.id, "ceremonyShuttle", v)
+                    }
+                  />
+                )}
                 <EventToggle
                   label="Goodbye Brunch"
                   sublabel="November 1, 2026"
@@ -438,7 +467,15 @@ export default function RsvpPage() {
                     <div className="text-sm text-muted space-y-1">
                       {attending ? (
                         <>
-                          {r.welcomeParty && <p>Welcome Party - Attending</p>}
+                          {r.welcomeParty && (
+                            <p>
+                              Welcome Party - Attending (
+                              {r.welcomePartyShuttle
+                                ? "Shuttle needed"
+                                : "No shuttle"}
+                              )
+                            </p>
+                          )}
                           {r.ceremony && (
                             <p>
                               Ceremony &amp; Reception - Attending (
@@ -446,6 +483,10 @@ export default function RsvpPage() {
                                 ? r.mealChoice.charAt(0) +
                                   r.mealChoice.slice(1).toLowerCase()
                                 : "No meal selected"}
+                              ,{" "}
+                              {r.ceremonyShuttle
+                                ? "shuttle needed"
+                                : "no shuttle"}
                               )
                             </p>
                           )}
@@ -523,6 +564,46 @@ function EventToggle({
           }`}
         >
           Decline
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ShuttleToggle({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between pl-4 border-l border-accent/20">
+      <p className="text-muted text-sm pr-4">{label}</p>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => onChange(true)}
+          className={`px-3 py-1.5 text-xs tracking-wider uppercase border transition-all duration-200 ${
+            checked
+              ? "border-accent-light bg-accent-light text-background"
+              : "border-accent/30 text-muted hover:border-accent-light hover:text-accent-light"
+          }`}
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange(false)}
+          className={`px-3 py-1.5 text-xs tracking-wider uppercase border transition-all duration-200 ${
+            checked === false
+              ? "border-accent-light bg-accent-light/10 text-accent-light"
+              : "border-accent/30 text-muted hover:border-accent-light hover:text-accent-light"
+          }`}
+        >
+          No
         </button>
       </div>
     </div>
