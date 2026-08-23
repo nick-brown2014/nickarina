@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 
 interface Guest {
   id: string;
@@ -393,8 +394,8 @@ export default function AdminPage() {
                         guest.rsvp.mealChoice.slice(1).toLowerCase()
                       : "-"}
                   </td>
-                  <td className="py-3 px-4 text-muted text-sm max-w-[200px] truncate">
-                    {guest.rsvp?.dietaryNotes || "-"}
+                  <td className="py-3 px-4 text-muted text-sm">
+                    <NotesCell notes={guest.rsvp?.dietaryNotes ?? null} />
                   </td>
                 </tr>
               ))}
@@ -426,6 +427,66 @@ function StatCard({
       </p>
       <p className="text-muted text-xs tracking-wider uppercase">{label}</p>
     </div>
+  );
+}
+
+function NotesCell({ notes }: { notes: string | null }) {
+  const [position, setPosition] = useState<{
+    top: number;
+    left: number;
+    above: boolean;
+  } | null>(null);
+  const triggerRef = useRef<HTMLSpanElement>(null);
+
+  const show = () => {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const width = 320;
+    const gap = 8;
+    const estimatedHeight = 160;
+    const above = rect.bottom + gap + estimatedHeight > window.innerHeight;
+    setPosition({
+      top: above ? rect.top - gap : rect.bottom + gap,
+      left: Math.max(gap, Math.min(rect.left, window.innerWidth - width - gap)),
+      above,
+    });
+  };
+
+  const hide = () => setPosition(null);
+
+  if (!notes) {
+    return <span className="text-muted/50 text-sm">-</span>;
+  }
+
+  return (
+    <>
+      <span
+        ref={triggerRef}
+        tabIndex={0}
+        onMouseEnter={show}
+        onMouseLeave={hide}
+        onFocus={show}
+        onBlur={hide}
+        className="block max-w-[200px] truncate cursor-help focus:outline-none focus:text-accent-light"
+      >
+        {notes}
+      </span>
+      {position &&
+        createPortal(
+          <div
+            role="tooltip"
+            style={{
+              top: position.top,
+              left: position.left,
+              transform: position.above ? "translateY(-100%)" : undefined,
+            }}
+            className="fixed z-50 w-80 max-h-64 overflow-y-auto border border-accent/40 bg-background px-4 py-3 text-sm text-foreground whitespace-pre-wrap break-words shadow-lg shadow-black/50"
+          >
+            {notes}
+          </div>,
+          document.body
+        )}
+    </>
   );
 }
 
