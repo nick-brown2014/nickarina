@@ -50,6 +50,8 @@ export default function AdminPage() {
   const [adminSecret, setAdminSecret] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [modalGuest, setModalGuest] = useState<Guest | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const fetchData = useCallback(async (secret: string) => {
     setLoading(true);
@@ -319,40 +321,49 @@ export default function AdminPage() {
             </svg>
             Export CSV
           </button>
+          <button
+            onClick={() => {
+              setModalGuest(null);
+              setModalOpen(true);
+            }}
+            className="px-4 py-2 text-xs tracking-wider uppercase border border-accent/30 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-200"
+          >
+            + Add Guest
+          </button>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-auto max-h-[70vh]">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-accent/30">
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+              <tr>
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Name
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Party
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Welcome
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   W. Shuttle
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Ceremony
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   C. Shuttle
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Reception
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Brunch
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Meal
                 </th>
-                <th className="py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase">
+                <th className="sticky top-0 z-10 bg-background py-3 px-4 font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light uppercase shadow-[0_1px_0_0] shadow-accent/30">
                   Notes
                 </th>
               </tr>
@@ -364,8 +375,16 @@ export default function AdminPage() {
                   className="border-b border-accent/10 hover:bg-accent/5 transition-colors"
                 >
                   <td className="py-3 px-4 text-foreground">
-                    {guest.firstName}
-                    {guest.lastName ? ` ${guest.lastName}` : ""}
+                    <button
+                      onClick={() => {
+                        setModalGuest(guest);
+                        setModalOpen(true);
+                      }}
+                      className="text-left hover:text-accent-light underline decoration-accent/30 underline-offset-4 hover:decoration-accent-light transition-colors cursor-pointer"
+                    >
+                      {guest.firstName}
+                      {guest.lastName ? ` ${guest.lastName}` : ""}
+                    </button>
                   </td>
                   <td className="py-3 px-4 text-muted text-sm">
                     {guest.partyId}
@@ -409,7 +428,292 @@ export default function AdminPage() {
           )}
         </div>
       </div>
+
+      {modalOpen && (
+        <GuestModal
+          guest={modalGuest}
+          adminSecret={adminSecret}
+          onClose={() => setModalOpen(false)}
+          onSaved={() => {
+            setModalOpen(false);
+            fetchData(adminSecret);
+          }}
+        />
+      )}
     </div>
+  );
+}
+
+function GuestModal({
+  guest,
+  adminSecret,
+  onClose,
+  onSaved,
+}: {
+  guest: Guest | null;
+  adminSecret: string;
+  onClose: () => void;
+  onSaved: () => void;
+}) {
+  const isNew = guest === null;
+  const [firstName, setFirstName] = useState(guest?.firstName ?? "");
+  const [lastName, setLastName] = useState(guest?.lastName ?? "");
+  const [partyId, setPartyId] = useState(guest?.partyId ?? "");
+  const [rsvpFields, setRsvpFields] = useState({
+    welcomeParty: guest?.rsvp?.welcomeParty ?? null,
+    welcomePartyShuttle: guest?.rsvp?.welcomePartyShuttle ?? null,
+    ceremony: guest?.rsvp?.ceremony ?? null,
+    ceremonyShuttle: guest?.rsvp?.ceremonyShuttle ?? null,
+    reception: guest?.rsvp?.reception ?? null,
+    goodbyeBrunch: guest?.rsvp?.goodbyeBrunch ?? null,
+  });
+  const [mealChoice, setMealChoice] = useState<"MEAT" | "VEGETARIAN" | "">(
+    guest?.rsvp?.mealChoice ?? ""
+  );
+  const [dietaryNotes, setDietaryNotes] = useState(
+    guest?.rsvp?.dietaryNotes ?? ""
+  );
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  const rsvpLabels: { key: keyof typeof rsvpFields; label: string }[] = [
+    { key: "welcomeParty", label: "Welcome Party" },
+    { key: "welcomePartyShuttle", label: "Welcome Shuttle" },
+    { key: "ceremony", label: "Ceremony" },
+    { key: "ceremonyShuttle", label: "Ceremony Shuttle" },
+    { key: "reception", label: "Reception" },
+    { key: "goodbyeBrunch", label: "Goodbye Brunch" },
+  ];
+
+  const authHeaders = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${adminSecret}`,
+  };
+
+  const handleSave = async () => {
+    if (!firstName.trim() || !lastName.trim() || !partyId.trim()) {
+      setError("First name, last name, and party are required.");
+      return;
+    }
+    setSaving(true);
+    setError("");
+    try {
+      let guestId = guest?.id;
+      if (isNew) {
+        const res = await fetch("/api/rsvp/admin", {
+          method: "POST",
+          headers: authHeaders,
+          body: JSON.stringify({ firstName, lastName, partyId }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError(data.error || "Failed to create guest.");
+          return;
+        }
+        guestId = data.guest.id;
+      }
+
+      const hasRsvpValues =
+        Object.values(rsvpFields).some((v) => v !== null) ||
+        mealChoice !== "" ||
+        dietaryNotes.trim() !== "";
+
+      const res = await fetch("/api/rsvp/admin", {
+        method: "PATCH",
+        headers: authHeaders,
+        body: JSON.stringify({
+          id: guestId,
+          firstName,
+          lastName,
+          partyId,
+          rsvp:
+            guest?.rsvp || hasRsvpValues
+              ? {
+                  ...rsvpFields,
+                  mealChoice: mealChoice || null,
+                  dietaryNotes: dietaryNotes.trim() || null,
+                }
+              : undefined,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Failed to save guest.");
+        return;
+      }
+      onSaved();
+    } catch {
+      setError("Failed to save. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!guest) return;
+    if (
+      !window.confirm(
+        `Remove ${guest.firstName} ${guest.lastName} from the guest list? This also deletes their RSVP.`
+      )
+    ) {
+      return;
+    }
+    setSaving(true);
+    setError("");
+    try {
+      const res = await fetch("/api/rsvp/admin", {
+        method: "DELETE",
+        headers: authHeaders,
+        body: JSON.stringify({ id: guest.id }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Failed to delete guest.");
+        return;
+      }
+      onSaved();
+    } catch {
+      setError("Failed to delete. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const inputClass =
+    "w-full bg-transparent border border-accent/30 px-3 py-2 text-foreground text-sm placeholder:text-muted/50 focus:border-accent-light focus:outline-none transition-colors";
+  const labelClass =
+    "block font-[var(--font-special-elite)] text-xs tracking-wider text-accent-light mb-1 uppercase";
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-lg max-h-[85vh] overflow-y-auto border border-accent/40 bg-background p-6 shadow-lg shadow-black/50"
+      >
+        <h2 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-6">
+          {isNew ? "Add Guest" : "Edit Guest"}
+        </h2>
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className={labelClass}>First Name</label>
+            <input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Last Name</label>
+            <input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className={inputClass}
+            />
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <label className={labelClass}>Party</label>
+          <input
+            value={partyId}
+            onChange={(e) => setPartyId(e.target.value)}
+            className={inputClass}
+            placeholder="e.g. party-20"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          {rsvpLabels.map(({ key, label }) => (
+            <div key={key}>
+              <label className={labelClass}>{label}</label>
+              <select
+                value={
+                  rsvpFields[key] === null
+                    ? ""
+                    : rsvpFields[key]
+                      ? "yes"
+                      : "no"
+                }
+                onChange={(e) =>
+                  setRsvpFields((prev) => ({
+                    ...prev,
+                    [key]:
+                      e.target.value === ""
+                        ? null
+                        : e.target.value === "yes",
+                  }))
+                }
+                className={inputClass}
+              >
+                <option value="">Pending</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          ))}
+        </div>
+
+        <div className="mb-4">
+          <label className={labelClass}>Meal Choice</label>
+          <select
+            value={mealChoice}
+            onChange={(e) =>
+              setMealChoice(e.target.value as "MEAT" | "VEGETARIAN" | "")
+            }
+            className={inputClass}
+          >
+            <option value="">None</option>
+            <option value="MEAT">Meat</option>
+            <option value="VEGETARIAN">Vegetarian</option>
+          </select>
+        </div>
+
+        <div className="mb-6">
+          <label className={labelClass}>Dietary Notes</label>
+          <textarea
+            value={dietaryNotes}
+            onChange={(e) => setDietaryNotes(e.target.value)}
+            rows={3}
+            className={inputClass}
+          />
+        </div>
+
+        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-6 py-2 text-xs tracking-[0.2em] uppercase border border-accent-light text-accent-light hover:bg-accent-light hover:text-background transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {saving ? "Saving..." : "Save"}
+          </button>
+          <button
+            onClick={onClose}
+            disabled={saving}
+            className="px-6 py-2 text-xs tracking-[0.2em] uppercase border border-accent/30 text-muted hover:border-accent-light hover:text-accent-light transition-all duration-200 disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          {!isNew && (
+            <button
+              onClick={handleDelete}
+              disabled={saving}
+              className="ml-auto px-6 py-2 text-xs tracking-[0.2em] uppercase border border-red-400/40 text-red-400 hover:bg-red-400/10 transition-all duration-200 disabled:opacity-50"
+            >
+              Delete
+            </button>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
   );
 }
 

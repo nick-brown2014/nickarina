@@ -267,7 +267,7 @@
   },
   {
     "partyId": "party-20",
-    "label": "Matt, Rebecca",
+    "label": "Matt, Rebecca, Gwen, Walter",
     "members": [
       {
         "firstName": "Matt",
@@ -275,6 +275,14 @@
       },
       {
         "firstName": "Rebecca",
+        "lastName": "Norton"
+      },
+      {
+        "firstName": "Gwen",
+        "lastName": "Norton"
+      },
+      {
+        "firstName": "Walter",
         "lastName": "Norton"
       }
     ]
@@ -1161,25 +1169,25 @@
   },
   {
     "partyId": "party-89",
-    "label": "Josh, Christa",
+    "label": "Josh",
     "members": [
       {
         "firstName": "Josh",
         "lastName": "Reyes"
-      },
-      {
-        "firstName": "Christa",
-        "lastName": "Huddleston"
       }
     ]
   },
   {
     "partyId": "party-90",
-    "label": "Mike",
+    "label": "Mike, Iza",
     "members": [
       {
         "firstName": "Mike",
         "lastName": "Mata"
+      },
+      {
+        "firstName": "Iza",
+        "lastName": "Ruffino"
       }
     ]
   },
