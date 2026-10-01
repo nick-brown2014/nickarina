@@ -36,8 +36,10 @@ export default function ThemePage() {
           Theme
         </h1>
         <p className="text-muted leading-relaxed mb-16 max-w-[800px] mx-auto">
-          Guests are warmly encouraged (but not required) to interpret the theme through their attire. Our inspiration is Gothic Surrealism - see pinterest board for inspiration (here you combine both themed pinterest boards where there are varying levels of theme)
-          The theme is entirely optional; a classic formal black outfit is perfectly appropriate.
+          Guests are warmly encouraged (but not required) to interpret the theme through their attire. Our inspiration is Gothic Surrealism - see pinterest board for inspiration.
+          <br></br>
+          <br></br>
+          The theme is entirely optional, a classic formal black outfit is perfectly appropriate.
         </p>
 
         <div className="space-y-20">
