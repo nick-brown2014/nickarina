@@ -80,7 +80,10 @@ const schedule: ScheduleEvent[] = [
       </MapLink>
       </>
     ),
-    transportation: "Provided (shuttles from the designated hotels)",
+    transportation: (<>
+      Provided (shuttles from the designated hotels) &mdash; see{" "}
+      <a className="text-accent-light hover:opacity-[80%]" href="#transportation">shuttle schedule</a>
+    </>),
     attire: (<>Formal attire in strictly the color <span className='font-bold'>BLACK</span>.
     <br/>
       Optional (but encouraged) theme: GOTH SURREALIST.
@@ -91,12 +94,12 @@ const schedule: ScheduleEvent[] = [
   },
   {
     date: "Sunday, November 1, 2026",
-    title: "Farewell Brunch",
-    time: "Details to come",
-    location: "TBD",
+    title: "Farewell Coffee",
+    time: "10:00 - 11:30 AM",
+    location: "Kind Coffee, Estes Park",
     transportation: "Not provided",
-    attire: "Casual",
-    description: "It's a farewell brunch! What more do you need to know?.",
+    attire: "Casual, warm clothes (long pants, jackets) recommended",
+    description: "Stop by and grab a cup of coffee for the road with us at Kind Coffee in Estes Park! There will be coffee and pastries in the outdoor space behind the coffee shop. It will probably be pretty cold, so dress warmly!",
   },
 ];
 
@@ -110,6 +113,25 @@ const roomBlocks = [
     name: "Holiday Inn Estes Park",
     href: "https://www.ihg.com/holidayinn/hotels/us/en/find-hotels/select-roomrate?fromRedirect=true&qSrt=sBR&qIta=99801505&icdv=99801505&qSlH=DENEP&qCiD=30&qCiMy=092026&qCoD=01&qCoMy=102026&qGrpCd=EBW&setPMCookies=true&qSHBrC=HI&qDest=101%20S%20Saint%20Vrain%20Ave,%20Estes%20Park,%20CO,%20US&showApp=true&adjustMonth=false&srb_u=1",
     note: "Conveniently located on Estes Park's main avenue.",
+  },
+];
+
+const shuttleToVenue = [
+  { time: "4:15 PM", detail: "Buses staged at Estes Park Resort" },
+  { time: "4:25 PM", detail: "Depart Estes Park Resort" },
+  { time: "4:35 PM", detail: "Arrive at Holiday Inn Estes Park" },
+  { time: "4:45 \u2013 4:50 PM", detail: "Depart Holiday Inn Estes Park" },
+  { time: "5:00 \u2013 5:10 PM", detail: "Arrive at Della Terra for the 5:30 PM ceremony" },
+];
+
+const shuttleFromVenue = [
+  {
+    time: "9:15 PM",
+    detail: "Early shuttle back to both hotels (one bus only) for guests who would like to leave early",
+  },
+  {
+    time: "11:00 \u2013 11:15 PM",
+    detail: "Final departure back to both hotels (both buses)",
   },
 ];
 
@@ -133,6 +155,7 @@ export default function DetailsPage() {
             { href: "#schedule", label: "Schedule" },
             { href: "#venues", label: "Venues" },
             { href: "#room-blocks", label: "Room Blocks" },
+            { href: "#transportation", label: "Transportation" },
           ].map((link, i, arr) => (
             <span key={link.href} className="flex items-center gap-x-2">
               <a
@@ -246,7 +269,7 @@ export default function DetailsPage() {
           <p className="text-muted leading-relaxed mb-8 max-w-xl mx-auto">
             Join us in your Halloween costume for a fun and relaxed gathering
             at The Bull Pin in Estes Park, CO. Food and drinks will be provided,
-            alongside bowling, games, s&apos;mores, and other assorted mischeif.
+            alongside bowling, games, s&apos;mores, and other assorted mischief.
           </p>
           <a
             href="https://maps.google.com/?q=The+Bull+Pin+Estes+Park+CO"
@@ -289,6 +312,48 @@ export default function DetailsPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <hr className="border-0 border-t border-accent/40 w-full mx-auto my-20" />
+
+        <section id="transportation" className="text-center scroll-mt-40">
+          <h2 className="font-[var(--font-special-elite)] text-2xl md:text-3xl tracking-wider text-accent-light mb-4">
+            Transportation
+          </h2>
+          <p className="text-muted mb-12 max-w-3xl mx-auto">
+            Two shuttle buses will run between the hotels and Della Terra on
+            Saturday, October 31. Both buses follow the same pickup schedule, and
+            one bus will offer an early return for guests who would like to leave
+            the reception early.
+          </p>
+
+          <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-4">
+            To Della Terra
+          </h3>
+          <ul className="text-muted space-y-1 mb-10">
+            {shuttleToVenue.map((stop) => (
+              <li key={stop.time}>
+                <span className="text-accent-light">{stop.time}</span> &mdash; {stop.detail}
+              </li>
+            ))}
+          </ul>
+
+          <hr className="border-0 border-t border-accent/40 w-24 mx-auto mb-10" />
+
+          <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-4">
+            Back to the Hotels
+          </h3>
+          <ul className="text-muted space-y-1 mb-6">
+            {shuttleFromVenue.map((stop) => (
+              <li key={stop.time}>
+                <span className="text-accent-light">{stop.time}</span> &mdash; {stop.detail}
+              </li>
+            ))}
+          </ul>
+          <p className="text-muted max-w-xl mx-auto">
+            Buses will wait nearby during the ceremony and reception. Departure
+            times are approximate, so please be ready a few minutes early.
+          </p>
         </section>
       </div>
     </div>
