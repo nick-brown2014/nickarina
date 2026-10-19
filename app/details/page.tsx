@@ -95,7 +95,7 @@ const schedule: ScheduleEvent[] = [
   {
     date: "Sunday, November 1, 2026",
     title: "Farewell Coffee",
-    time: "10:00 - 11:30 AM",
+    time: "9:30 - 11:30 AM",
     location: "Kind Coffee, Estes Park",
     transportation: "Not provided",
     attire: "Casual, warm clothes (long pants, jackets) recommended",
