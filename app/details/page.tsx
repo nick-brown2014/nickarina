@@ -89,6 +89,9 @@ const schedule: ScheduleEvent[] = [
       Optional (but encouraged) theme: GOTH SURREALIST.
     </>),
     description: (<>
+      <span className='text-accent-light font-bold'>Please note:</span> the ceremony and cocktail hour will be held outside, and it will be cold! Dress warmly.
+      <br/>
+      <br/>
       For more information on preferred attire, please go to our <a className='text-accent-light hover:opacity-[80%]' href='/theme'>theme page</a>
     </>),
   },

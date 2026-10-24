@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import WeatherBanner from "./WeatherBanner";
 
 const navLinks = [
   { href: "/our-story", label: "Our Story" },
@@ -93,6 +94,7 @@ export default function Navigation() {
           </ul>
         )}
       </div>
+      <WeatherBanner />
     </nav>
   );
 }
