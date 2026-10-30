@@ -119,6 +119,17 @@ const roomBlocks = [
   },
 ];
 
+const shuttleToBullPin = [
+  { time: "5:45 PM", detail: "Pick up at Estes Park Resort" },
+  { time: "6:00 PM", detail: "First shuttle arrives at The Bull Pin" },
+  { time: "6:10 \u2013 6:15 PM", detail: "Pick up at Holiday Inn Estes Park" },
+  { time: "6:25 \u2013 6:30 PM", detail: "Second shuttle arrives at The Bull Pin" },
+  {
+    time: "9:00 \u2013 9:15 PM",
+    detail: "First shuttle departs for Estes Park Resort, with a few more loops to follow",
+  },
+];
+
 const shuttleToVenue = [
   { time: "4:15 PM", detail: "Buses staged at Estes Park Resort" },
   { time: "4:25 PM", detail: "Depart Estes Park Resort" },
@@ -324,14 +335,30 @@ export default function DetailsPage() {
             Transportation
           </h2>
           <p className="text-muted mb-12 max-w-3xl mx-auto">
-            Two shuttle buses will run between the hotels and Della Terra on
-            Saturday, October 31. Both buses follow the same pickup schedule, and
-            one bus will offer an early return for guests who would like to leave
-            the reception early.
+            Shuttles will run from the hotels to The Bull Pin on Friday, October 30.
+            <br></br>
+            <br></br>
+            On Saturday, October 31, two shuttle buses will run between the hotels
+            and Della Terra. Both buses follow the same pickup schedule, and one
+            bus will offer an early return for guests who would like to leave the
+            reception early.
           </p>
 
           <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-4">
-            To Della Terra
+            To the Bull Pin (Friday)
+          </h3>
+          <ul className="text-muted space-y-1 mb-10">
+            {shuttleToBullPin.map((stop) => (
+              <li key={stop.time}>
+                <span className="text-accent-light">{stop.time}</span> &mdash; {stop.detail}
+              </li>
+            ))}
+          </ul>
+
+          <hr className="border-0 border-t border-accent/40 w-24 mx-auto mb-10" />
+
+          <h3 className="font-[var(--font-special-elite)] text-xl tracking-wider text-foreground mb-4">
+            To Della Terra (Saturday)
           </h3>
           <ul className="text-muted space-y-1 mb-10">
             {shuttleToVenue.map((stop) => (
