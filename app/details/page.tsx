@@ -121,9 +121,10 @@ const roomBlocks = [
 
 const shuttleToBullPin = [
   { time: "5:45 PM", detail: "Pick up at Estes Park Resort" },
-  { time: "6:00 PM", detail: "First shuttle arrives at The Bull Pin" },
-  { time: "6:10 \u2013 6:15 PM", detail: "Pick up at Holiday Inn Estes Park" },
-  { time: "6:25 \u2013 6:30 PM", detail: "Second shuttle arrives at The Bull Pin" },
+  { time: "6:00 PM", detail: "Pick up at Holiday Inn" },
+  { time: "6:10 PM", detail: "First shuttle arrives at The Bull Pin" },
+  { time: "6:15 \u2013 6:20 PM", detail: "Pick up at Holiday Inn Estes Park" },
+  { time: "6:30", detail: "Second shuttle arrives at The Bull Pin" },
   {
     time: "9:00 \u2013 9:15 PM",
     detail: "First shuttle departs for Estes Park Resort, with a few more loops to follow",
