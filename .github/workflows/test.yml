@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # main already has pre-existing lint errors; report them without failing the job.
+      - run: npm run lint
+        continue-on-error: true
+      # next-env.d.ts (image/module types) is gitignored, so generate it before tsc.
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npm test
